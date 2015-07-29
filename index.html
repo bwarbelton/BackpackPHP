@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width"> <!--, initial-scale=1"-->
+    <title>Kutz 4 Kids</title>
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
+    <link href="./css/jquery.selectBoxIt.css" rel="stylesheet">
+    <link href="./css/style.css" media="screen" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body style="background-image:none">
+<div class="navbar body-top-navbar navbar-fixed-top" style="background-color: black;">
+    <nav id="navbutton" class="nav">
+        <ul class="nav-list">
+            <!--           <li class="nav-item"><a href="/index" title="Registration">Registration</a></li> -->
+            <li class="nav-item"><a title="Registration" onClick="registration()">Registration</a></li>
+            <li class="nav-item"><a title="Haircut" onClick="checkHaircut()">Hair Cut</a></li>
+            <li class="nav-item"><a title="Check Health Care" onClick="checkHealthcare()">Health Care</a></li>
+            <li class="nav-item"><a title="Check Backpack" onClick="checkBackpack()">Backpack</a></li>
+            <li class="nav-item"><a title="List All Names" onClick="listAll()">List All Names</a></li>
+            <li class="nav-item"><a href="http://dreambigabq.org/kutz4kidz.html" title="Help Center">HELP</a></li>
+        </ul>
+    </nav>
+    <a href="http://dreambigabq.org/kutz4kidz.html" class="logo-black" style="position: fixed; top: 0; left: 0; "></a>
+</div>
+
+<div class="container" id="wrapper">
+    <h2>Backpacks for Students</h2><br/>
+    <div id="childDetailDiv" class="upload_form">
+        <label>Child Id &nbsp;&nbsp; </label><input id="childId" type="text"></input>
+        <input id=lookupButton type="button" value="Lookup" onClick="lookupChild()" /><br />
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(type or scan barcode)</p><br />
+        <label>First Name &nbsp;&nbsp; </label><input id="firstName" type="text"></input><br /><br/>
+        <label>Last Name &nbsp;&nbsp; </label><input id="lastName" type="text"></input><br /><br/>
+
+        <div id="addressDiv" style="display: none;">
+            <label>Address  </label><input id="address" type="text"></input><br /><br/>
+            <label>City </label><input id="city" type="text"></input><br/><br/>
+            <label>State </label><input id="state" type="text"></input><br/><br/>
+            <label>Zip Code </label><input id="zip" type="input"></input>
+        </div>
+        <br/>
+        <div id="backpackDiv" style="display: none;">
+            <label>Received Backpack </label><input type="checkbox" id="backpackCheckbox" name="backpackCheckbox" value="Backpack">  <br />
+        </div>
+        <br/>
+        <div id="healthcheckDiv" style="display: none;">
+            <label>Received Health Check  </label><input type="checkbox" id="healthCheckCheckbox" name="healthCheckCheckbox" value="Health Check"> <br />
+        </div>
+        <br/>
+        <div id="haircutDiv" style="display: none;">
+            <label>Received Haircut </label><input type="checkbox" id="haircutCheckbox" name="haircutCheckbox" value="Haircut"> <br />
+        </div>
+        <br/>
+        <input id=clearButton type="button" value="Clear" onClick="clearDetails()" />&nbsp;
+        <input id=saveButton type="button" value="Save" onClick="saveChild()" />
+    </div>
+    <p></p>
+    <div id="childListDiv" style="display: none;">
+        <table id="childListTable"></table>
+    </div>
+</div>
+<script src="./js/jquery-2.1.4.js"></script>
+<script src="./js/childDataAccess.js"></script>
+<script src="./js/backpack.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+    });
+    // Create mobile element
+    var mobile = document.createElement('div');
+    mobile.className = 'nav-mobile';
+    $('.nav').append(mobile);
+    // hasClass
+    function hasClass(elem, className) {
+        return new RegExp(' ' + className + ' ').test(' ' + elem.className + ' ');
+    }
+    // toggleClass
+    function toggleClass(elem, className) {
+        var newClass = ' ' + elem.className.replace(/[\t\r\n]/g, ' ') + ' ';
+        if (hasClass(elem, className)) {
+            while (newClass.indexOf(' ' + className + ' ') >= 0) {
+                newClass = newClass.replace(' ' + className + ' ', ' ');
+            }
+            elem.className = newClass.replace(/^\s+|\s+$/g, '');
+        } else {
+            elem.className += ' ' + className;
+        }
+    }
+    // Mobile nav function
+    var mobileNav = document.querySelector('.nav-mobile');
+    var toggle = document.querySelector('.nav-list');
+    mobileNav.onclick = function () {
+        toggleClass(this, 'nav-mobile-open');
+        toggleClass(toggle, 'nav-active');
+    };
+</script>
+</body>
+</html>
