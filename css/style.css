@@ -1,0 +1,471 @@
+body {
+	font: 14px/21px "Lucida Sans", "Lucida Grande", "Lucida Sans Unicode", sans-serif;
+}
+.container {
+    height: 100%;
+    margin-top: 90px;
+}
+.upload_form {
+    margin-top: 30px;
+}
+.upload_form h2, .upload_form label {
+	font-family:Georgia, Times, "Times New Roman", serif;
+}
+.form_hint, .required_notification {
+	font-size: 11px;
+}
+:-moz-placeholder {
+	color: blue;
+}
+ CMake: Windows Client Version: 3.8.11.2 (cmake-2.8.11.2-win32-x86.exe) (http://www.cmake.org/cmake/resources/software.html) Install to defaults. It is important to have this version as the Cuda and IPP modules have been changing and older version have been shown not to work with these build scripts.
+::-webkit-input-placeholder {
+    color: blue;
+}
+*:focus {
+	outline: none;
+}
+.upload_form ul {
+    width: 100%; /*750px;*/
+    list-style-type:none;
+    list-style-position:outside;
+    margin:0px;
+    padding:0px;
+}
+.upload_form li{
+    padding:12px; 
+    /*border-bottom:1px solid #eee;*/
+    position:relative;
+}
+.upload_form li:first-child, .upload_form li:last-child {
+	/*border-bottom:1px solid #777;*/
+}
+
+.upload_form div {
+    width: 100%; /*750px;*/
+/*     padding:12px;  */
+/*     margin:10px; */
+    /*border-bottom:1px solid #eee;*/
+    position:relative;
+}
+.upload_form div:first-child, .upload_form div:last-child {
+	/*border-bottom:1px solid #777;*/
+}
+
+.upload_form h2 {
+    margin:0;
+    display: inline;
+}
+.required_notification {
+    color:#d45252; 
+    margin:5px 0 0 0; 
+    display:inline;
+    float:right;
+}
+.upload_form label {
+    width:150px;
+    margin-top: 3px;
+    display:inline-block;
+    float:left;
+    padding:3px;
+}
+.upload_form input {
+    /*height:20px; */
+    /*width:120px; */
+    padding:5px 8px;
+}
+.upload_form textarea {
+	padding:8px; width:300px;
+}
+.upload_form button {
+	/*margin-left:156px;*/
+}
+.upload_form input, .upload_form textarea { 
+	border:1px solid #aaa;
+	box-shadow: 0px 0px 3px #ccc, 0 10px 15px #eee inset;
+	border-radius:2px;
+}
+.upload_form input:focus, .upload_form textarea:focus {
+    background: #fff; 
+    border:1px solid #555; 
+    box-shadow: 0 0 3px #aaa; 
+}
+/* Button Style */
+button.submit {
+    background-color: #68b12f;
+    background: -webkit-gradient(linear, left top, left bottom, from(#68b12f), to(#50911e));
+    background: -webkit-linear-gradient(top, #68b12f, #50911e);
+    background: -moz-linear-gradient(top, #68b12f, #50911e);
+    background: -ms-linear-gradient(top, #68b12f, #50911e);
+    background: -o-linear-gradient(top, #68b12f, #50911e);
+    background: linear-gradient(top, #68b12f, #50911e);
+    border: 1px solid #509111;
+    border-bottom: 1px solid #5b992b;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -ms-border-radius: 3px;
+    -o-border-radius: 3px;
+    box-shadow: inset 0 1px 0 0 #9fd574;
+    -webkit-box-shadow: 0 1px 0 0 #9fd574 inset ;
+    -moz-box-shadow: 0 1px 0 0 #9fd574 inset;
+    -ms-box-shadow: 0 1px 0 0 #9fd574 inset;
+    -o-box-shadow: 0 1px 0 0 #9fd574 inset;
+    color: white;
+    font-weight: bold;
+    padding: 6px 20px;
+    text-align: center;
+    text-shadow: 0 -1px 0 #396715;
+    /*height: 40px;*/
+	background-color: #1C9455;
+	/*font-size: 16px;*/
+}
+button.submit:hover {
+    opacity:.85;
+    cursor: pointer; 
+}
+button.submit:active {
+    border: 1px solid #912911;
+    box-shadow: 0 0 10px 5px #912911 inset; 
+    -webkit-box-shadow:0 0 10px 5px #912911 inset ;
+    -moz-box-shadow: 0 0 10px 5px #912911 inset;
+    -ms-box-shadow: 0 0 10px 5px #912911 inset;
+    -o-box-shadow: 0 0 10px 5px #912911 inset;    
+}
+button.delete {
+    background-color: #912911;
+    background: -webkit-gradient(linear, left top, left bottom, from(#912911), to(#912911));
+    background: -webkit-linear-gradient(top, #912911, #912911);
+    background: -moz-linear-gradient(top, #912911, #912911);
+    background: -ms-linear-gradient(top, #912911, #912911);
+    background: -o-linear-gradient(top, #912911, #912911);
+    background: linear-gradient(top, #912911, #912911);
+    border: 1px solid #912911;
+    border-bottom: 1px solid #912911;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -ms-border-radius: 3px;
+    -o-border-radius: 3px;
+    box-shadow: inset 0 1px 0 0 #912911;
+    -webkit-box-shadow: 0 1px 0 0 #912911 inset ;
+    -moz-box-shadow: 0 1px 0 0 #912911 inset;
+    -ms-box-shadow: 0 1px 0 0 #912911 inset;
+    -o-box-shadow: 0 1px 0 0 #912911 inset;
+    color: white;
+    font-weight: bold;
+    padding: 6px 20px;
+    text-align: center;
+    text-shadow: 0 -1px 0 #396715;
+}
+button.delete:hover {
+    opacity:.85;
+    cursor: pointer; 
+}
+button.delete:active {
+    border: 1px solid #912911;
+    box-shadow: 0 0 10px 5px #912911 inset; 
+    -webkit-box-shadow:0 0 10px 5px #912911 inset ;
+    -moz-box-shadow: 0 0 10px 5px #912911 inset;
+    -ms-box-shadow: 0 0 10px 5px #912911 inset;
+    -o-box-shadow: 0 0 10px 5px #912911 inset;    
+}
+/* add this to the already existing style */
+/*.upload_form input:focus, .upload_form textarea:focus { 
+    padding-right:50px;
+}*/
+.upload_form input, .upload_form textarea { 
+    -moz-transition: padding .25s; 
+    -webkit-transition: padding .25s; 
+    -o-transition: padding .25s;
+    transition: padding .25s;
+}
+.upload_form input, .upload_form textarea {
+    padding-right:30px;
+}
+input:required, textarea:required {
+}
+::-webkit-validation-bubble-message {
+    padding: 1em;
+}
+
+@media screen and (max-width: 480px)
+{
+ 	div#wrapper, li#wrapper
+ 	{
+  		width: 400px;
+  		/*background-image: url(phone-bg.jpg);*/
+ 	}
+}
+@media screen and (max-width: 1024px) and (min-width: 481px)
+{
+ 	div#wrapper, li#wrapper
+ 	{
+  		/*width: 800px;*/
+  		/*background-image: url(tablet-bg.jpg);*/
+ 	}
+}
+@media screen and (min-width: 1025px)
+{
+ 	div#wrapper, li#wrapper
+ 	{
+  		width: 1080px;
+  		/*background-image: url(fullsize-bg.jpg);*/
+ 	}
+}
+div.tagsinput {
+    border: 1px solid #ccc;
+    background: #FFF;
+    padding: 5px;
+    width: 300px;
+    height: 100px;
+    overflow: hidden
+}
+
+div.tagsinput span.tag {
+    border: 1px solid #cbe290;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    display: block;
+    float: left;
+    padding: 2px 5px;
+    text-decoration: none;
+    background: #cde69c;
+    color: #638421;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    font-family: helvetica;
+    font-size: 12px
+}
+
+div.tagsinput span.tag a {
+    font-weight: bold;
+    color: #82ad2b;
+    text-decoration: none;
+    font-size: 11px
+}
+
+div.tagsinput input {
+    width: 80px;
+    margin: 0px;
+    font-family: helvetica;
+    font-size: 13px;
+    border: 1px solid transparent;
+    padding: 5px;
+    background: transparent;
+    color: #000;
+    outline: 0px;
+    margin-right: 5px;
+    margin-bottom: 5px
+}
+
+div.tagsinput div.tag {
+    display: block;
+    float: left
+}
+
+.tags_clear {
+    clear: both;
+    width: 100%;
+    height: 0px
+}
+
+.not_valid {
+    background: #FBD8DB !important;
+    color: #90111A !important
+}
+
+.tagsinput_charCounter,.tagsinput_tagCounter {
+    text-align: right;
+    color: #aaa;
+    font-size: 12px;
+    margin-top: 3px
+}
+
+.tagsinput_charCounter .countDown,.tagsinput_tagCounter .countDown {
+    margin-left: 5px
+}
+
+.tagsinput_charCounter.prewarning,.tagsinput_tagCounter.prewarning {
+    color: #860f0f
+}
+
+.tagsinput_charCounter.warning,.tagsinput_tagCounter.warning {
+    color: #d62929
+}
+
+.tagsinput_charCounter.exceeded,.tagsinput_tagCounter.exceeded {
+    color: #ff5500;
+    font-weight: bold
+}
+
+.tagsinput_tagCounter {
+    float: left
+}
+
+div.tagsinput.disabled {
+    background: #f0f0f0
+}
+
+div.tagsinput.disabled .tag {
+    border: 1px solid #ddd
+}
+
+div.tagsinput.disabled .tag a {
+    display: none
+}
+
+div.tagsinput.disabled .input_wrapper {
+    display: none
+}
+/*Navigation bar */
+/* .nav { */
+/*   	position:relative; */
+/*   	display:inline-block; */
+/*   	font-size:14px; */
+/*   	font-weight:900; */
+/*     background:#000; */
+/*     height: 55px; */
+/*     float: right; */
+/* } */
+/* .nav-list { */
+/* 	display:block;   */
+/* } */
+/* .nav-item { */
+/*   float:left; */
+/*   display:inline; */
+/*   zoom:1; */
+/* } */
+/* .nav-item a { */
+/*   display:block; */
+/*   padding:15px 20px; */
+/*   color:#FFF; */
+/*   background:#34495E; */
+/* } */
+/* .nav-item:first-child a { */
+/*   border-radius:5px 0 0 5px; */
+/* } */
+/* .nav-item:last-child a { */
+/*   border-radius:0 5px 5px 0; */
+/* } */
+/* .nav-item a:hover { */
+/*   background:#2C3E50; */
+/* } */
+.nav {
+  position:relative;
+  display:inline-block;
+  font-size:14px;
+  font-weight:900;
+  float: right;
+  height: 70px;
+}
+.nav-list {
+  
+}
+.nav-item {
+  float:left;
+  display:inline;
+  zoom:1;
+}
+.nav-item a {
+  display:block;
+  padding:15px 20px;
+  color:#FFF;
+  background:#34495E;
+}
+.nav-item:first-child a {
+  border-radius:5px 0 0 5px;
+}
+.nav-item:last-child a {
+  border-radius:0 5px 5px 0;
+}
+.nav-item a:hover {
+  background:#2C3E50;
+}
+
+
+.nav-mobile {
+  display:none; /* Hide from browsers that don't support media queries */
+  cursor:pointer;
+  position:absolute;
+  top:8px;
+  right:0;
+  background:#000 url('./../image/nav.png') no-repeat center center;
+  height:40px;
+  width:40px;
+  border-radius:5px;
+  -webkit-border-radius:5px;
+  -moz-border-radius:5px;
+  background-position: -3px -1px;
+}
+
+@media only screen and (min-width: 320px) and (max-width: 820px) {
+    .nav-mobile {
+        display:block;
+    }
+    .nav {
+        /*width:100%;*/
+        padding:40px 0 0;
+    }
+    .nav-list {
+        display:none;
+    }
+    .nav-item {
+        /*width:100%;*/
+        float:none;
+    }
+    .nav-item a {
+        background:#34495E;
+        padding:10px;
+    }
+    .nav-item:first-child a {
+        border-radius:5px 0 0;
+    }
+    .nav-item:last-child a {
+        border-radius:0 0 5px 5px;
+    }
+    .nav-active {
+        display:block;
+    }
+    .nav-mobile-open {
+        border-radius:5px 5px 0 0;
+        -webkit-border-radius:5px 5px 0 0;
+        -moz-border-radius:5px 5px 0 0;
+    }
+}
+/*main body */
+.logo-black {
+	background: transparent url('./../image/interior_logo.jpg') no-repeat 0 0;
+    width: 199px;
+    height: 70px;
+	display: block;
+	/*position: absolute;*/
+ }
+
+.spinner {
+    width: 50px;
+    height: 80px;
+    border: 0px;
+    margin: 0px;
+}
+.slider {
+    width: 720px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+    /*float: right;*/
+/*    margin-bottom: 0px;
+    margin-right: 20px;*/
+}
+.thumbset {
+    overflow: visible;
+    /*margin-top: 75px;*/
+}
+.thumb {
+    margin-left: 15px;
+}
+.boxShort {
+    border: 2px #0B0101 solid;
+    width: 50%;
+    padding: 5px 15px;
+    color: black;
+}
