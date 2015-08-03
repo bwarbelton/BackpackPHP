@@ -6,14 +6,15 @@ require "Slim/Slim.php";
 // create new Slim instance
 $app = new \Slim\Slim();
 
-$app->get('/children', 'getChildren');
-$app->get('/child/:id', 'getChild');
-$app->post('/child/:id', 'putChild');
-$app->post('/','postNewChild');
-
 $app->get('/', function(){
     echo "Backpack API";
 });
+$app->get('/children', 'getChildren');
+$app->get('/child/:id', 'getChild');
+$app->post('/child','postNewChild');
+// $app->post('/child/:id', 'postNewChild');
+$app->put('/child/:id', 'putChild');
+$app->delete('/child/:id', 'deleteChild');
 
 $app->get('/testPage', function() use ($app) {
     $app->render('testpage.php');
@@ -33,52 +34,171 @@ function getChildren() {
     }
 }
 
+function fetchChild($child_id) {
+    $sql = "select child_id AS childId, first_name AS firstName, last_name AS lastName, backpack, healthCheck, haircut FROM child where child_id =:child_id";
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam("child_id", $child_id);
+        $stmt->execute();
+        $child = $stmt->fetchObject();
+        $db = null;
+        return $child;
+    } catch(PDOException $e) {
+        return '{"error":{"text":'. $e->getMessage() .'}}';
+    }
+}
 
 function getChild($child_id) {
-    $sql = "select child_id AS childId, first_name AS firstName, last_name AS lastName, backpack, healthCheck, haircut FROM child
-            where child_id =child_id";
+    $child = fetchChild($child_id);
+    echo json_encode($child);
+}
 
-  //  $stmt->bindParam("child_id", $child_id); 
-    try {
-        $db = getConnection();
-        $stmt = $db->query($sql);
-        $child = $stmt->fetchAll(PDO::FETCH_OBJ);
-        $db = null;
-        echo json_encode($child);
-    } catch(PDOException $e) {
-        echo '{"error":{"text":'. $e->getMessage() .'}}';
+function postNewChild() {
+    $request = \Slim\Slim::getInstance()->request();
+    $child = json_decode($request->getBody());
+    $whichField = $request->params('insertOnly');
+    if ($whichField == null) {
+        echo json_encode(insertAllFields($child));
+    } else {
+        echo json_encode(insertOnly($child, $whichField));
     }
 }
 
-function putChild($child_id, $backpack) {
-    $sql = "update child set backpack = backpack where child_id =child_id";
-
-    //  $stmt->bindParam("child_id", $child_id); 
+function insertAllFields($child) {
+    $sql = "INSERT INTO child (child_id, first_name, last_name, backpack, healthCheck, haircut) VALUES (:child_id, :first_name, :last_name, :backpack, :healthCheck, :haircut)";
     try {
         $db = getConnection();
-        $stmt = $db->query($sql);
-        $child = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam("child_id", $child->childId);
+        $stmt->bindParam("first_name", $child->firstName);
+        $stmt->bindParam("last_name", $child->lastName);
+        $stmt->bindParam("backpack", $child->backpack);
+        $stmt->bindParam("healthCheck", $child->healthCheck);
+        $stmt->bindParam("haircut", $child->haircut);
+        $stmt->execute();
+        // $child->childId = $db->lastInsertId();
         $db = null;
-        echo json_encode($child);
+        return $child;
     } catch(PDOException $e) {
-        echo '{"error":{"text":'. $e->getMessage() .'}}';
+        return '{"error":{"text":'. $e->getMessage() .'}}';
     }
 }
 
-function postNewChild($child_id) {
-    echo "posting new child...";
-    //TOD0: read from formToJSON data passed from html -> js
-//    $sql = "insert into child  (child_id, firstName, lastName, address, city, state, zip, race)
-//            (child_id, firstName, lastName, address, city, state, zip, race)";
-    $sql = "insert into child  (child_id, firstName, lastName) values (child_id, firstName, lastName)";
+function insertOnly($child, $whichField) {
+    // return '{"resp":{"childId":'. $child_id .', "whichField":'. $whichField .'}}';
+    switch ($whichField) {
+        case "haircut":
+            $child->healthCheck = 0;
+            $child->backpack = 0;
+            $sql = "INSERT INTO child (child_id, $whichField) VALUES (:child_id, $child->haircut)";
+            break;
+        case "healthCheck":
+            $child->haircut = 0;
+            $child->backpack = 0;
+            $sql = "INSERT INTO child (child_id, $whichField) VALUES (:child_id, $child->healthCheck)";
+            break;
+        case "backpack":
+            $child->haircut = 0;
+            $child->healthCheck = 0;
+            $sql = "INSERT INTO child (child_id, $whichField) VALUES (:child_id, $child->backpack)";
+            break;
+    }
     try {
+        $child->firstName = null;
+        $child->lastName = null;
         $db = getConnection();
-        $stmt = $db->query($sql);
-        $child = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam("child_id", $child->childId);
+        $stmt->execute();
+        // $child->childId = $db->lastInsertId();
         $db = null;
-        echo json_encode($child);
+        return $child;
     } catch(PDOException $e) {
-        echo '{"error":{"text":'. $e->getMessage() .'}}';
+        return '{"error":{"text":'. $e->getMessage() .'}}';
+    }
+}
+
+function putChild($child_id)
+{
+    $existingChild = fetchChild($child_id);
+    if ($existingChild != false) {
+        $request = \Slim\Slim::getInstance()->request();
+        $child = json_decode($request->getBody());
+        $whichField = $request->params('updateOnly');
+        if ($whichField == null) {
+            echo json_encode(updateAllFields($child_id, $child));
+        } else {
+            echo json_encode(updateOnly($child_id, $child, $whichField));
+        }
+    } else {
+        echo "Child not found.";
+    }
+}
+
+function updateAllFields($child_id, $child) {
+    $sql = "UPDATE child SET first_name=:first_name, last_name=:last_name, backpack=:backpack, healthCheck=:healthCheck, haircut=:haircut WHERE child_id=:child_id";
+    try {
+        $child->child_id = $child_id;
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam("child_id", $child_id);
+        $stmt->bindParam("first_name", $child->firstName);
+        $stmt->bindParam("last_name", $child->lastName);
+        $stmt->bindParam("backpack", $child->backpack);
+        $stmt->bindParam("healthCheck", $child->healthCheck);
+        $stmt->bindParam("haircut", $child->haircut);
+        $stmt->execute();
+        // $child->childId = $db->lastInsertId();
+        $db = null;
+        return $child;
+    } catch(PDOException $e) {
+        return '{"error":{"text":'. $e->getMessage() .'}}';
+    }
+}
+
+function updateOnly($child_id, $child, $whichField)
+{
+    // return '{"resp":{"childId":'. $child_id .', "whichField":'. $whichField .'}}';
+    try {
+        $existingChild = fetchChild($child_id);
+        $child->child_id = $child_id;
+        $child->firstName = $existingChild->firstName;
+        $child->lastName = $existingChild->lastName;
+        $db = getConnection();
+        switch ($whichField) {
+            case "haircut":
+                $child->healthCheck = $existingChild->healthCheck;
+                $child->backpack = $existingChild->backpack;
+                $sql = "UPDATE child SET haircut=:haircut WHERE child_id=:child_id";
+                $stmt = $db->prepare($sql);
+                $stmt->bindParam("child_id", $child_id);
+                $stmt->bindParam("haircut", $child->haircut);
+                $stmt->execute();
+                break;
+            case "healthCheck":
+                $child->haircut = $existingChild->haircut;
+                $child->backpack = $existingChild->backpack;
+                $sql = "UPDATE child SET healthCheck=:healthCheck WHERE child_id=:child_id";
+                $stmt = $db->prepare($sql);
+                $stmt->bindParam("child_id", $child_id);
+                $stmt->bindParam("healthCheck", $child->healthCheck);
+                $stmt->execute();
+                break;
+            case "backpack":
+                $child->healthCheck = $existingChild->healthCheck;
+                $child->haircut = $existingChild->haircut;
+                $sql = "UPDATE child SET backpack=:backpack WHERE child_id=:child_id";
+                $stmt = $db->prepare($sql);
+                $stmt->bindParam("child_id", $child_id);
+                $stmt->bindParam("backpack", $child->backpack);
+                $stmt->execute();
+                break;
+        }
+        $db = null;
+        return $child;
+    } catch (PDOException $e) {
+        return '{"error":{"text":' . $e->getMessage() . '}}';
     }
 }
 

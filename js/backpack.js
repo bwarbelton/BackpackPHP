@@ -60,11 +60,11 @@ var backpack = (function(BACKPACK) {
 		getChild : function(childId) {
 			var that = this;
 			backpack.childDataAccess.getChildAsync(childId).done(
-					function(data) {
-                        var index= data.length - 1;
-						that.setChildDetails(childId, data[index].firstName,
-								data[index].lastName, data[index].backpack, data[index].healthCheck, data[index].haircut);
-					});
+				function(data) {
+					var index= data.length - 1;
+					that.setChildDetails(data.childId, data.firstName,
+						data.lastName, data.backpack, data.healthCheck, data.haircut);
+				});
 		},
 		setChildDetails : function(childId, firstName, lastName, backpack, healthCheck, haircut) {
 			$("#childId").val(childId);
