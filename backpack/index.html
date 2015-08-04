@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width"> <!--, initial-scale=1"-->
+    <title>Kutz 4 Kids</title>
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/jquery.selectBoxIt.css" rel="stylesheet">
+    <link href="../css/style.css" media="screen" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body style="background-image:none">
+<h2>Kutz4Kidz Backpack</h2><br/>
+<div id="childDetailDiv" class="upload_form">
+    <label>Child Id</label><input id="childId" type="text"/>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(type or scan barcode)<br />
+    <label>&nbsp;</label>
+    <input id=lookupButton type="button" value="Lookup" onClick="lookupChild()" /><br />
+    <p>&nbsp;</p>
+    <label>First Name &nbsp;&nbsp; </label><input id="firstName" type="text" /><br /><br/>
+    <!--add updates for healthcheck & haircut-->
+    <label>Health Check</label><input id="healthcheck" type="text" readonly /> <br/><br/>
+    <label for="haircut">Haircut &nbsp;&nbsp;</label><input id="haircut" type="text" readonly /><br/><br/>
+
+    <!--if both not completed, disable Set Completed button -->
+    <input id=statusButton type="button" value="Status Unknown" disabled style="background-color: yellow;" />
+    <label>&nbsp;</label><input id=updateButton type="button" value="Set Completed" onClick="setBackpackCompleted()" />
+</div>
+<script src="../js/jquery-2.1.4.js"></script>
+<script src="../js/childDataAccess.js"></script>
+<script src="../js/stations.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        enableDisableUpdateButton();
+        $('#firstName').on('change', function(){
+           enableDisableUpdateButton();
+        });
+
+    })
+
+    function enableDisableUpdateButton()
+    {
+        if ($('#healthcheck').text().toLowerCase() == 'not completed' ||
+            $('#healthcheck').text().toLowerCase() == "" ||
+            $('#haircut').text().toLowerCase() == 'not completed' ||
+            $('#haircut').text().toLowerCase())
+        {
+            $('#updateButton').prop('disabled', true);
+        }
+        else
+        {
+            $('#updateButton').prop('disabled', false);
+        }
+    }
+</script>
+</body>
+</html>
