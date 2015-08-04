@@ -32,8 +32,8 @@ var backpack = (function(BACKPACK) {
 			$("#" + tableId)
 					.html(
 							"<thead><tr><th width='50px;'>ID</th><th width='150px;'>First Name</th>" +
-							"<th width='200px'>Last Name</th><th>Health Check</th><th>Haircut</th>" +
-							"<th width='50px'>Backpack</th></tr></thead><tbody></tbody>");
+							"<th width='200px'>Last Name</th><th width='100px'>Health Check</th><th width='100px'>Haircut</th>" +
+							"<th width='100px'>Backpack</th></tr></thead><tbody></tbody>");
 		},
 		refreshChildListTable : function(tableId) {
 			var that = this;
@@ -46,6 +46,10 @@ var backpack = (function(BACKPACK) {
 			$('#childListDiv').attr("style", "display:block");
 		},
 		addChildRow : function(tableId, child) {
+			var cHealthcheck = (child.healthCheck == 1) ? 'Done' : 'Not Completed';
+			var cHaircut = (child.haircut == 1) ? 'Done' : 'Not Completed';
+			var cBackpack = (child.backpack == 1) ? 'Done' : 'Not Completed';
+
 			$("#" + tableId + " tbody")
 					.append(
 							"<tr><td >"
@@ -55,11 +59,11 @@ var backpack = (function(BACKPACK) {
 									+ "</td><td>"
 									+ child.lastName
 									+ "</td><td>"
-									+ (child.healthCheck)?'Done':'not completed'
+									+ cHealthcheck
 									+ "</td><td>"
-									+ child.haircut
+									+ cHaircut
 									+ "</td><td>"
-									+ child.backpack
+									+ cBackpack
 									+"</td><td>"
 									+ "<input type=\"button\" value=\"Select\" onclick=\""
 									+ this.name + ".getChild(" + child.childId+ ")\" /></td></tr>");

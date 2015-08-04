@@ -64,6 +64,20 @@ var backpack = (function(BACKPACK) {
                     var index= data.length - 1;
                     that.setChildDetails(data.childId, data.firstName,
                         data.lastName, data.backpack, data.healthCheck, data.haircut);
+                    //if (data.healthCheck == 1 && data.haircut == 1) {
+                    //    $('#updateButton').prop('disabled', false);
+                    //}
+                    //else {
+                    //    $('#updateButton').prop('disabled', true);
+                    //}
+                    if (data.healthCheck == 1 && data.haircut == 1 && data.backpack == 1) {
+                        $('#statusButton').attr('style', 'background-color:green')
+                        $('#statusButton').val('All good to go!')
+                    }
+                    else {
+                        $('#statusButton').attr('style', 'background-color:yellow')
+                        $('#statusButton').val('Not all completed')
+                    }
                 });
         },
         setChildDetails : function(childId, firstName, lastName, backpack, healthCheck, haircut) {
@@ -254,7 +268,7 @@ function setStationCompleted(whichStation) {
             if (typeof (existingChild) !== "undefined"
                 && existingChild.childId > 0) {
                 backpack.childDataAccess
-                    .updateChildAsync(child)
+                    .updateOnlyAsync(child, whichStation)
                     .done(
                     function(updatedChild) {
                         if (typeof (updatedChild) !== "undefined"
@@ -263,6 +277,23 @@ function setStationCompleted(whichStation) {
                                 .getChild(updatedChild.childId);
                             childList
                                 .refreshChildListTable(childList.childListTableId);
+                            switch (whichStation){
+                                case haircut:
+                                    $('#updateButton').prop('disabled', false);
+                                    return;
+                                case healthCheck:
+                                    $('#updateButton').prop('disabled', false);
+                                    return;
+                                case backpack:
+                                    if (data.healthCheck == 1 && data.haircut == 1) {
+                                        $('#updateButton').prop('disabled', false);
+                                    }
+                                    else {
+                                        $('#updateButton').prop('disabled', true);
+                                    }
+                                    return;
+                            }
+
                         }
                     });
             } else {
@@ -282,17 +313,6 @@ function setStationCompleted(whichStation) {
         })
         .fail(
         function() {
-            backpack.childDataAccess
-                .insertHaircutAsync(child)
-                .done(
-                function(insertedChild) {
-                    if (typeof (insertedChild) !== "undefined"
-                        && insertedChild.childId > 0) {
-                        childList
-                            .getChild(insertedChild.childId);
-                        childList
-                            .refreshChildListTable(childList.childListTableId);
-                    }
-                });
+            // Add a error message box to our pages
         });
 }

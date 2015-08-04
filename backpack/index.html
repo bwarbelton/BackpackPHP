@@ -27,8 +27,8 @@
     <label for="haircut">Haircut &nbsp;&nbsp;</label><input id="haircut" type="text" readonly /><br/><br/>
 
     <!--if both not completed, disable Set Completed button -->
-    <input id=statusButton type="button" value="Status Unknown" disabled style="background-color: yellow;" />
-    <label>&nbsp;</label><input id=updateButton type="button" value="Set Completed" onClick="setBackpackCompleted()" />
+    <input id=statusButton type="button" value="Not all completed" disabled style="background-color: yellow;" />
+    <label>&nbsp;</label><input id=updateButton type="button" value="Set Completed" onClick="setBackpackCompleted(backpackCallback)" />
 </div>
 <script src="../js/jquery-2.1.4.js"></script>
 <script src="../js/childDataAccess.js"></script>
@@ -36,11 +36,15 @@
 <script type="text/javascript">
     $(document).ready(function(){
         enableDisableUpdateButton();
-        $('#firstName').on('change', function(){
+        $('#lookupButton').on('click', function(){
            enableDisableUpdateButton();
         });
 
     })
+
+    function backpackCallback(){
+        var i=0;
+    }
 
     function enableDisableUpdateButton()
     {
