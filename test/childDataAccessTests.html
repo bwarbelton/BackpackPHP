@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<label>Child Id&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </label><input id="childId" type="text" /><br/>
+<label>First Name&nbsp;&nbsp;&nbsp;&nbsp; </label><input id="firstName" type="text" /><br/>
+<label>Last Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </label><input id="lastName" type="text" /><br/>
+<label>Haircut&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </label><input id="haircut" type="text" /><br/>
+<label>Health Check&nbsp;&nbsp; </label><input id="healthCheck" type="text" /><br/>
+<label>Backpack&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </label><input id="backpack" type="text" /><br/>
+<label>Url&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </label><label id="urlLabel"></label><br/>
+<label>JSON sent to server&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </label><label id="jsonLabel"></label><br/>
+<input id="getChildren" type="button" value="Get Children" onClick="getChildren()" />
+<input id="getChild" type="button" value="Get Child" onClick="getChild()" />
+<br/><label>Output</label>
+<textarea id="output" style="width: 100%"></textarea>
+<script>
+    function getChildren() {
+        childDataAccess.getChildListAsync().done(function(list) {
+            $("#output").val(JSON.stringify(list));
+            $("#urlLabel").text(childDataAccess.lastRequest);
+            $("#jsonLabel").text("");
+        });
+    }
+    function getChild() {
+        childDataAccess.getChildListAsync().done(function(list) {
+            $("#output").val(JSON.stringify(list));
+        });
+    }
+</script>
+<script src="../js/jquery-2.1.4.js"></script>
+<script src="../js/childDataAccess.js"></script>
+<script src="../js/backpack.js"></script>
+</body>
+</html>

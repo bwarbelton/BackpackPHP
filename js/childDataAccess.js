@@ -2,6 +2,7 @@
  * 
  */
 var childDataAccess = (function(CHILDDATAACCESS) {
+	CHILDDATAACCESS.lastRequest = "";
 	CHILDDATAACCESS.insertChildAsync = function(child) {
 		var deferredList = new jQuery.Deferred();
 			$.ajax({
@@ -78,11 +79,13 @@ var childDataAccess = (function(CHILDDATAACCESS) {
 		return deferredList.promise();
 	};
 	CHILDDATAACCESS.getChildAsync = function(childId) {
+		var that = this;
 		var deferredList = new jQuery.Deferred();
 			$.ajax({
 				type: "GET",
 				url: backpack.baseUrl + '/backpack/api/child/' + childId,
 				success: function(fetchResult) {
+					that.lastRequest = backpack.baseUrl + '/backpack/api/child/' + childId;
 					deferredList.resolve(fetchResult);
 				},
 				error: function() {
@@ -93,11 +96,13 @@ var childDataAccess = (function(CHILDDATAACCESS) {
 		return deferredList.promise();
 	};
 	CHILDDATAACCESS.getChildListAsync = function() {
+		var that = this;
 		var deferredList = new jQuery.Deferred();
 			$.ajax({
 				type: "GET",
 				url: backpack.baseUrl + '/backpack/api/children',
 				success: function(fetchResult) {
+					that.lastRequest = backpack.baseUrl + '/backpack/api/children';
 					deferredList.resolve(fetchResult);
 				},
 				error: function() {
