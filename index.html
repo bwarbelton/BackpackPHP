@@ -19,9 +19,9 @@
         <ul class="nav-list">
             <!--           <li class="nav-item"><a href="/index" title="Registration">Registration</a></li> -->
             <li class="nav-item"><a title="Registration" onClick="registration()">Registration</a></li>
-            <li class="nav-item"><a title="Haircut" onClick="checkHaircut()">Hair Cut</a></li>
-            <li class="nav-item"><a title="Check Health Care" onClick="checkHealthcare()">Health Care</a></li>
-            <li class="nav-item"><a title="Check Backpack" onClick="checkBackpack()">Backpack</a></li>
+            <li class="nav-item"><a title="Haircut" href="/backpack/haircut">Hair Cut</a></li>
+            <li class="nav-item"><a title="Check Health Care" href="/backpack/healthcheck">Health Care</a></li>
+            <li class="nav-item"><a title="Check Backpack" href="/backpack/backpack">Backpack</a></li>
             <li class="nav-item"><a title="List All Names" onClick="listAll()">List All Names</a></li>
             <li class="nav-item"><a href="http://dreambigabq.org/kutz4kidz.html" title="Help Center">HELP</a></li>
         </ul>
@@ -32,31 +32,31 @@
 <div class="container" id="wrapper">
     <h2>Backpacks for Students</h2><br/>
     <div id="childDetailDiv" class="upload_form">
-        <label>Child Id &nbsp;&nbsp; </label><input id="childId" type="text"></input>
+        <label>Child Id &nbsp;&nbsp; </label><input id="childId" type="text"/>
         <input id=lookupButton type="button" value="Lookup" onClick="lookupChild()" /><br />
         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(type or scan barcode)</p><br />
-        <label>First Name &nbsp;&nbsp; </label><input id="firstName" type="text"></input><br /><br/>
-        <label>Last Name &nbsp;&nbsp; </label><input id="lastName" type="text"></input><br /><br/>
+        <label>First Name &nbsp;&nbsp; </label><input id="firstName" type="text"/><br /><br/>
+        <label>Last Name &nbsp;&nbsp; </label><input id="lastName" type="text"/><br /><br/>
 
         <div id="addressDiv" style="display: none;">
-            <label>Address  </label><input id="address" type="text"></input><br /><br/>
-            <label>City </label><input id="city" type="text"></input><br/><br/>
-            <label>State </label><input id="state" type="text"></input><br/><br/>
-            <label>Zip Code </label><input id="zip" type="input"></input><br/><br/>
-            <label>Race </label><input id="race" type="input"></input>
+            <label>Address  </label><input id="address" type="text"/><br /><br/>
+            <label>City </label><input id="city" type="text"/><br/><br/>
+            <label>State </label><input id="state" type="text"/><br/><br/>
+            <label>Zip Code </label><input id="zip" type="input"/><br/><br/>
+            <label>Race </label><input id="race" type="input"/>
         </div>
         <br/>
-        <div id="backpackDiv" style="display: none;">
-            <label>Received Backpack </label><input type="checkbox" id="backpackCheckbox" name="backpackCheckbox" value="Backpack">  <br />
-        </div>
-        <br/>
-        <div id="healthcheckDiv" style="display: none;">
-            <label>Received Health Check  </label><input type="checkbox" id="healthCheckCheckbox" name="healthCheckCheckbox" value="Health Check"> <br />
-        </div>
-        <br/>
-        <div id="haircutDiv" style="display: none;">
-            <label>Received Haircut </label><input type="checkbox" id="haircutCheckbox" name="haircutCheckbox" value="Haircut"> <br />
-        </div>
+        <!--<div id="backpackDiv" style="display: none;">-->
+            <!--<label>Received Backpack </label><input type="checkbox" id="backpackCheckbox" name="backpackCheckbox" value="Backpack">  <br />-->
+        <!--</div>-->
+        <!--<br/>-->
+        <!--<div id="healthcheckDiv" style="display: none;">-->
+            <!--<label>Received Health Check  </label><input type="checkbox" id="healthCheckCheckbox" name="healthCheckCheckbox" value="Health Check"> <br />-->
+        <!--</div>-->
+        <!--<br/>-->
+        <!--<div id="haircutDiv" style="display: none;">-->
+            <!--<label>Received Haircut </label><input type="checkbox" id="haircutCheckbox" name="haircutCheckbox" value="Haircut"> <br />-->
+        <!--</div>-->
         <br/>
         <input id=clearButton type="button" value="Clear" onClick="clearDetails()" />&nbsp;
         <input id=saveButton type="button" value="Save" onClick="saveChild()" />

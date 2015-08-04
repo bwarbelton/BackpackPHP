@@ -9,6 +9,7 @@ $app = new \Slim\Slim();
 $app->get('/', function(){
     echo "Backpack API";
 });
+
 $app->get('/children', 'getChildren');
 $app->get('/child/:id', 'getChild');
 $app->post('/child','postNewChild');

@@ -6,13 +6,13 @@ $(document).ready(
 		function() {
 			childList = backpack.createChildList("childList", "childListTable",
 					"childDetailDiv");
-            $("#registrationDiv").attr("style", "display:none");
-            $("#addressDiv").attr("style", "display:none");
-            $("#backpackDiv").attr("style", "display:none");
-            $("#haircutDiv").attr("style", "display:none");
-            $("#healthcheckDiv").attr("style", "display:none");
+            //$("#registrationDiv").attr("style", "display:none");
+            //$("#addressDiv").attr("style", "display:none");
+            //$("#backpackDiv").attr("style", "display:none");
+            //$("#haircutDiv").attr("style", "display:none");
+            //$("#healthcheckDiv").attr("style", "display:none");
 			childList.initialize();
-			// bindButtonEvents();
+			//// bindButtonEvents();
 		});
 
 /**
@@ -114,7 +114,7 @@ backpack.baseUrl = $(location).attr('protocol') + '//'
 backpack.childDataAccess = childDataAccess;
 
 function registration() {
-	$("#registrationDiv").attr("style", "display:block");
+	$("#childDetailDiv").attr("style", "display:block");
 	$("#addressDiv").attr("style", "display:block");
 	$("#backpackDiv").attr("style", "display:none");
 	$("#haircutDiv").attr("style", "display:none");
@@ -154,12 +154,13 @@ function checkHealthcare() {
 }
 
 function listAll() {
+	$("#childDetailDiv").attr("style", "display:none");
 	$("#registrationDiv").attr("style", "display:none");
 	$("#addressDiv").attr("style", "display:none");
 	$("#backpackDiv").attr("style", "display:none");
 	$("#haircutDiv").attr("style", "display:none");
 	$("#healthcheckDiv").attr("style", "display:none");
-	$("#childListDiv").attr("style", "display:block");	
+	$("#childListDiv").attr("style", "display:block");
 }
 
 function clearDetails() {

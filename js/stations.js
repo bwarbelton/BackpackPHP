@@ -57,19 +57,28 @@ var backpack = (function(BACKPACK) {
                 + ")\" /></td></tr>");
 
         },
-        getChild : function(childId) {
+        getChild : function(childId, whichStation) {
             var that = this;
             backpack.childDataAccess.getChildAsync(childId).done(
                 function(data) {
                     var index= data.length - 1;
                     that.setChildDetails(data.childId, data.firstName,
                         data.lastName, data.backpack, data.healthCheck, data.haircut);
-                    //if (data.healthCheck == 1 && data.haircut == 1) {
-                    //    $('#updateButton').prop('disabled', false);
-                    //}
-                    //else {
-                    //    $('#updateButton').prop('disabled', true);
-                    //}
+                    switch (whichStation){
+                        case 'haircut':
+                        case 'healthCheck':
+                            $('#updateButton').prop('disabled', false);
+                            break;
+                        case 'backpack':
+                            if (data.healthCheck == 1 && data.haircut == 1) {
+                                $('#updateButton').prop('disabled', false);
+                            }
+                            else {
+                                $('#updateButton').prop('disabled', true);
+                            }
+                            break;
+                    }
+
                     if (data.healthCheck == 1 && data.haircut == 1 && data.backpack == 1) {
                         $('#statusButton').attr('style', 'background-color:green')
                         $('#statusButton').val('All good to go!')
@@ -85,24 +94,24 @@ var backpack = (function(BACKPACK) {
             $("#firstName").val(firstName);
             $("#lastName").val(lastName);
             if (backpack > 0) {
-                $('#backpackCheckbox').prop('checked', true);
+      //          $('#backpackCheckbox').prop('checked', true);
                 $('#backpack').val('done');
             } else {
-                $('#backpackCheckbox').prop('checked', false);
+     //           $('#backpackCheckbox').prop('checked', false);
                 $('#backpack').val('not completed');
             }
             if (healthCheck > 0) {
-                $('#healthCheckCheckbox').prop('checked', true);
+     //           $('#healthCheckCheckbox').prop('checked', true);
                 $('#healthcheck').val('done');
             } else {
-                $('#healthCheckCheckbox').prop('checked', false);
+    //            $('#healthCheckCheckbox').prop('checked', false);
                 $('#healthcheck').val('not completed');
             }
             if (haircut > 0) {
-                $('#haircutCheckbox').prop('checked', true);
+     //           $('#haircutCheckbox').prop('checked', true);
                 $('#haircut').val('done');
             } else {
-                $('#haircutCheckbox').prop('checked', false);
+     //           $('#haircutCheckbox').prop('checked', false);
                 $('#haircut').val('not completed');
             }		}
     }
@@ -122,7 +131,8 @@ backpack.baseUrl = $(location).attr('protocol') + '//'
 backpack.childDataAccess = childDataAccess;
 
 function registration() {
-    $("#registrationDiv").attr("style", "display:block");
+   // $("#registrationDiv").attr("style", "display:block");
+    $("#childDetailDiv").attr("style", "display:block");
     $("#addressDiv").attr("style", "display:block");
     $("#backpackDiv").attr("style", "display:none");
     $("#haircutDiv").attr("style", "display:none");
@@ -132,7 +142,7 @@ function registration() {
 }
 
 function checkBackpack() {
-    $("#registrationDiv").attr("style", "display:none");
+   // $("#registrationDiv").attr("style", "display:none");
     $("#addressDiv").attr("style", "display:none");
     $("#backpackDiv").attr("style", "display:block");
     $("#haircutDiv").attr("style", "display:none");
@@ -162,6 +172,7 @@ function checkHealthcare() {
 }
 
 function listAll() {
+    $("#childDetailDiv").attr("style", "display:none");
     $("#registrationDiv").attr("style", "display:none");
     $("#addressDiv").attr("style", "display:none");
     $("#backpackDiv").attr("style", "display:none");
@@ -179,76 +190,77 @@ function clearDetails() {
     $('#haircutCheckbox').prop('checked', false);
 }
 
-function lookupChild() {
+function lookupChild(whichStation) {
     var childId = $("#childId").val();
     clearDetails();
-    childList.getChild(childId);
+    childList.getChild(childId, whichStation);
 }
 
-function saveChild() {
-    var child = {};
-    child.childId = $("#childId").val();
-    child.firstName = $("#firstName").val();
-    child.lastName = $("#lastName").val();
-    child.backpack = $("#backpackCheckbox").prop("checked") ? 1 : 0;
-    child.healthCheck = $("#healthCheckCheckbox").prop("checked") ? 1 : 0;
-    child.haircut = $("#haircutCheckbox").prop("checked") ? 1 : 0;
-    clearDetails();
-    backpack.childDataAccess
-        .getChildAsync(child.childId)
-        .done(
-        function(existingChild) {
-            if (typeof (existingChild) !== "undefined"
-                && existingChild.childId > 0) {
-                backpack.childDataAccess
-                    .updateChildAsync(child)
-                    .done(
-                    function(updatedChild) {
-                        if (typeof (updatedChild) !== "undefined"
-                            && updatedChild.childId > 0) {
-                            childList
-                                .getChild(updatedChild.childId);
-                            childList
-                                .refreshChildListTable(childList.childListTableId);
-                        }
-                    });
-            } else {
-                backpack.childDataAccess
-                    .insertAsync(child)
-                    .done(
-                    function(updatedChild) {
-                        if (typeof (updatedChild) !== "undefined"
-                            && updatedChild.childId > 0) {
-                            childList
-                                .getChild(updatedChild.childId);
-                            childList
-                                .refreshChildListTable(childList.childListTableId);
-                        }
-                    });
-            }
-        })
-        .fail(
-        function() {
-            backpack.childDataAccess
-                .insertChildAsync(child)
-                .done(
-                function(insertedChild) {
-                    if (typeof (insertedChild) !== "undefined"
-                        && insertedChild.childId > 0) {
-                        childList
-                            .getChild(insertedChild.childId);
-                        childList
-                            .refreshChildListTable(childList.childListTableId);
-                    }
-                });
-        });
-}
+//old code
+//function saveChild() {
+//    var child = {};
+//    child.childId = $("#childId").val();
+//    child.firstName = $("#firstName").val();
+//    child.lastName = $("#lastName").val();
+//    child.backpack = $("#backpackCheckbox").prop("checked") ? 1 : 0;
+//    child.healthCheck = $("#healthCheckCheckbox").prop("checked") ? 1 : 0;
+//    child.haircut = $("#haircutCheckbox").prop("checked") ? 1 : 0;
+//    clearDetails();
+//    backpack.childDataAccess
+//        .getChildAsync(child.childId)
+//        .done(
+//        function(existingChild) {
+//            if (typeof (existingChild) !== "undefined"
+//                && existingChild.childId > 0) {
+//                backpack.childDataAccess
+//                    .updateChildAsync(child)
+//                    .done(
+//                    function(updatedChild) {
+//                        if (typeof (updatedChild) !== "undefined"
+//                            && updatedChild.childId > 0) {
+//                            childList
+//                                .getChild(updatedChild.childId);
+//                            childList
+//                                .refreshChildListTable(childList.childListTableId);
+//                        }
+//                    });
+//            } else {
+//                backpack.childDataAccess
+//                    .insertAsync(child)
+//                    .done(
+//                    function(updatedChild) {
+//                        if (typeof (updatedChild) !== "undefined"
+//                            && updatedChild.childId > 0) {
+//                            childList
+//                                .getChild(updatedChild.childId);
+//                            childList
+//                                .refreshChildListTable(childList.childListTableId);
+//                        }
+//                    });
+//            }
+//        })
+//        .fail(
+//        function() {
+//            backpack.childDataAccess
+//                .insertChildAsync(child)
+//                .done(
+//                function(insertedChild) {
+//                    if (typeof (insertedChild) !== "undefined"
+//                        && insertedChild.childId > 0) {
+//                        childList
+//                            .getChild(insertedChild.childId);
+//                        childList
+//                            .refreshChildListTable(childList.childListTableId);
+//                    }
+//                });
+//        });
+//}
 
 function setHaircutCompleted() {
     setStationCompleted("haircut");
 }
 function setHealthCheckCompleted() {
-    setStationCompleted("healthcheck");
+    setStationCompleted("healthCheck");
 }
 function setBackpackCompleted() {
     setStationCompleted("backpack");
@@ -277,23 +289,6 @@ function setStationCompleted(whichStation) {
                                 .getChild(updatedChild.childId);
                             childList
                                 .refreshChildListTable(childList.childListTableId);
-                            switch (whichStation){
-                                case haircut:
-                                    $('#updateButton').prop('disabled', false);
-                                    return;
-                                case healthCheck:
-                                    $('#updateButton').prop('disabled', false);
-                                    return;
-                                case backpack:
-                                    if (data.healthCheck == 1 && data.haircut == 1) {
-                                        $('#updateButton').prop('disabled', false);
-                                    }
-                                    else {
-                                        $('#updateButton').prop('disabled', true);
-                                    }
-                                    return;
-                            }
-
                         }
                     });
             } else {
