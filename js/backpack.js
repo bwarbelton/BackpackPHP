@@ -31,7 +31,9 @@ var backpack = (function(BACKPACK) {
 		addHeader : function(tableId) {
 			$("#" + tableId)
 					.html(
-							"<thead><tr><th width='50px;'>ID</th><th width='150px;'>First Name</th><th width='200px'>Last Name</th></tr></thead><tbody></tbody>");
+							"<thead><tr><th width='50px;'>ID</th><th width='150px;'>First Name</th>" +
+							"<th width='200px'>Last Name</th><th>Health Check</th><th>Haircut</th>" +
+							"<th width='50px'>Backpack</th></tr></thead><tbody></tbody>");
 		},
 		refreshChildListTable : function(tableId) {
 			var that = this;
@@ -52,16 +54,22 @@ var backpack = (function(BACKPACK) {
 									+ child.firstName
 									+ "</td><td>"
 									+ child.lastName
-									+ "</td><td><input type=\"button\" value=\"Select\" onclick=\""
-									+ this.name + ".getChild(" + child.childId
-									+ ")\" /></td></tr>");
+									+ "</td><td>"
+									+ (child.healthCheck)?'Done':'not completed'
+									+ "</td><td>"
+									+ child.haircut
+									+ "</td><td>"
+									+ child.backpack
+									+"</td><td>"
+									+ "<input type=\"button\" value=\"Select\" onclick=\""
+									+ this.name + ".getChild(" + child.childId+ ")\" /></td></tr>");
 
 		},
 		getChild : function(childId) {
 			var that = this;
 			backpack.childDataAccess.getChildAsync(childId).done(
 				function(data) {
-					var index= data.length - 1;
+					//var index= data.length - 1;
 					that.setChildDetails(data.childId, data.firstName,
 						data.lastName, data.backpack, data.healthCheck, data.haircut);
 				});
@@ -85,7 +93,7 @@ var backpack = (function(BACKPACK) {
 			} else {
 				$('#haircutCheckbox').prop('checked', false);
 			}		}
-	}
+	};
 	BACKPACK.createChildList = function(name, childListTableId,
 			childDetailDivId) {
 		var newChildList = Object.create(BACKPACK.childList);
@@ -93,7 +101,7 @@ var backpack = (function(BACKPACK) {
 		newChildList.childListTableId = childListTableId;
 		newChildList.childDetailDivId = childDetailDivId;
 		return newChildList;
-	}
+	};
 	return BACKPACK;
 }(backpack || {}));
 

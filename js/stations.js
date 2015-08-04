@@ -72,18 +72,24 @@ var backpack = (function(BACKPACK) {
             $("#lastName").val(lastName);
             if (backpack > 0) {
                 $('#backpackCheckbox').prop('checked', true);
+                $('#backpack').val('done');
             } else {
                 $('#backpackCheckbox').prop('checked', false);
+                $('#backpack').val('not completed');
             }
             if (healthCheck > 0) {
                 $('#healthCheckCheckbox').prop('checked', true);
+                $('#healthcheck').val('done');
             } else {
                 $('#healthCheckCheckbox').prop('checked', false);
+                $('#healthcheck').val('not completed');
             }
             if (haircut > 0) {
                 $('#haircutCheckbox').prop('checked', true);
+                $('#haircut').val('done');
             } else {
                 $('#haircutCheckbox').prop('checked', false);
+                $('#haircut').val('not completed');
             }		}
     }
     BACKPACK.createChildList = function(name, childListTableId,
@@ -226,6 +232,12 @@ function saveChild() {
 
 function setHaircutCompleted() {
     setStationCompleted("haircut");
+}
+function setHealthCheckCompleted() {
+    setStationCompleted("healthcheck");
+}
+function setBackpackCompleted() {
+    setStationCompleted("backpack");
 }
 
 function setStationCompleted(whichStation) {
