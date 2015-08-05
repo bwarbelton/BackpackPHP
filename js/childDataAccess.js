@@ -62,14 +62,14 @@ var childDataAccess = (function(CHILDDATAACCESS) {
 		var deferredList = new jQuery.Deferred();
 			$.ajax({
 				type: "PUT",
-				url: backpack.baseUrl + '/backpack/api/child/' + child.childId,
+				url: backpack.baseUrl + '/backpack/api/child/' + child.punchCardId,
 				data: JSON.stringify(child),
 				contentType: 'application/json',
 				dataType: 'json',
 				headers: { "x-content-type-options": "nosniff" },
 				success: function(fetchResult) {
 					if (typeof(fetchResult) !== "undefined") {
-						that.lastRequest = backpack.baseUrl + '/backpack/api/child/' + child.childId;
+						that.lastRequest = backpack.baseUrl + '/backpack/api/child/' + child.punchCardId;
 						deferredList.resolve(fetchResult);
 					} else {
 						var childNotFound = {};
@@ -89,14 +89,14 @@ var childDataAccess = (function(CHILDDATAACCESS) {
 		var deferredList = new jQuery.Deferred();
 		$.ajax({
 			type: "PUT",
-			url: backpack.baseUrl + '/backpack/api/child/' + child.childId + '?updateOnly=' + whichField,
+			url: backpack.baseUrl + '/backpack/api/child/' + child.punchCardId + '?updateOnly=' + whichField,
 			data: JSON.stringify(child),
 			contentType: 'application/json',
 			dataType: 'json',
 			headers: { "x-content-type-options": "nosniff" },
 			success: function(fetchResult) {
 				if (typeof(fetchResult) !== "undefined") {
-					that.lastRequest = backpack.baseUrl + '/backpack/api/child/' + child.childId + '?updateOnly=' + whichField;
+					that.lastRequest = backpack.baseUrl + '/backpack/api/child/' + child.punchCardId + '?updateOnly=' + whichField;
 					deferredList.resolve(fetchResult);
 				} else {
 					var childNotFound = {};
@@ -111,14 +111,14 @@ var childDataAccess = (function(CHILDDATAACCESS) {
 		});
 		return deferredList.promise();
 	};
-	CHILDDATAACCESS.getChildAsync = function(childId) {
+	CHILDDATAACCESS.getChildAsync = function(punchCardId) {
 		var that = this;
 		var deferredList = new jQuery.Deferred();
 			$.ajax({
 				type: "GET",
-				url: backpack.baseUrl + '/backpack/api/child/' + childId,
+				url: backpack.baseUrl + '/backpack/api/child/' + punchCardId,
 				success: function(fetchResult) {
-					that.lastRequest = backpack.baseUrl + '/backpack/api/child/' + childId;
+					that.lastRequest = backpack.baseUrl + '/backpack/api/child/' + punchCardId;
 					deferredList.resolve(fetchResult);
 				},
 				error: function() {

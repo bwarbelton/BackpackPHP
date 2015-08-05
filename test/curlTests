@@ -1,32 +1,32 @@
 # Get all children
 curl -v -H 'Content-Type:application/json' -X GET 'http://ec2-52-27-90-156.us-west-2.compute.amazonaws.com/backpack/api/children'
 
-# Get a child. Assume there is one with child_id 254
-curl -v -H 'Content-Type:application/json' -X GET 'http://ec2-52-27-90-156.us-west-2.compute.amazonaws.com/backpack/api/child/254'
+# Get a child. Assume there is one with child_id 325
+curl -v -H 'Content-Type:application/json' -X GET 'http://ec2-52-27-90-156.us-west-2.compute.amazonaws.com/backpack/api/child/325'
 
 # Create a child. Assume there is not already one with child_id 300
-curl -v -H 'Content-Type:application/json' -X POST 'http://ec2-52-27-90-156.us-west-2.compute.amazonaws.com/backpack/api/child' -d '{"childId":"300","firstName":"Sandy","lastName":"Koufax","backpack":"0","healthCheck":"0","haircut":"1"}'
+curl -v -H 'Content-Type:application/json' -X POST 'http://ec2-52-27-90-156.us-west-2.compute.amazonaws.com/backpack/api/child' -d '{"punchCardId":"300","firstName":"Sandy","lastName":"Koufax","address":"13 5th Ave","city":"New York","state":"New York","zip":"00012","race":"caucasian","school":"NYU","backpack":"0","healthCheck":"0","haircut":"0"}'
 
 # Create a child but only update the haircut
-curl -v -H 'Content-Type:application/json' -X POST 'http://ec2-52-27-90-156.us-west-2.compute.amazonaws.com/backpack/api/child?insertOnly=haircut' -d '{"childId":"320","firstName":"Sandy","lastName":"Koufax","backpack":"1","healthCheck":"1","haircut":"1"}'
+curl -v -H 'Content-Type:application/json' -X POST 'http://ec2-52-27-90-156.us-west-2.compute.amazonaws.com/backpack/api/child?insertOnly=haircut' -d '{"punchCardId":"320","firstName":"Sandy","lastName":"Koufax","backpack":"1","healthCheck":"1","haircut":"1"}'
 
 # Create a child but only update the healthCheck
-curl -v -H 'Content-Type:application/json' -X POST 'http://ec2-52-27-90-156.us-west-2.compute.amazonaws.com/backpack/api/child?insertOnly=healthCheck' -d '{"childId":"320","firstName":"Sandy","lastName":"Koufax","backpack":"1","healthCheck":"1","haircut":"1"}'
+curl -v -H 'Content-Type:application/json' -X POST 'http://ec2-52-27-90-156.us-west-2.compute.amazonaws.com/backpack/api/child?insertOnly=healthCheck' -d '{"punchCardId":"321","firstName":"Sandy","lastName":"Koufax","backpack":"1","healthCheck":"1","haircut":"1"}'
 
 # Create a child but only update the backpack
-curl -v -H 'Content-Type:application/json' -X POST 'http://ec2-52-27-90-156.us-west-2.compute.amazonaws.com/backpack/api/child?insertOnly=backpack' -d '{"childId":"322","firstName":"Sandy","lastName":"Koufax","backpack":"1","healthCheck":"1","haircut":"1"}'
+curl -v -H 'Content-Type:application/json' -X POST 'http://ec2-52-27-90-156.us-west-2.compute.amazonaws.com/backpack/api/child?insertOnly=backpack' -d '{"punchCardId":"322","firstName":"Sandy","lastName":"Koufax","backpack":"1","healthCheck":"1","haircut":"1"}'
 
-# Update a child. Assume there is one with child_id 300
-curl -v -H 'Content-Type:application/json' -X PUT 'http://ec2-52-27-90-156.us-west-2.compute.amazonaws.com/backpack/api/child/300' -d '{"firstName":"Sandy","lastName":"Koufax","backpack":"0","healthCheck":"0","haircut":"1"}'
+# Update a child. Assume there is one with child_id 301
+curl -v -H 'Content-Type:application/json' -X PUT 'http://ec2-52-27-90-156.us-west-2.compute.amazonaws.com/backpack/api/child/1' -d '{"punchCardId":"325","firstName":"Hank","lastName":"Aaron","address":"45 S. Bronx","city":"The Bronx","state":"New York","zip":"00055","race":"African American","school":"Harvard","backpack":"0","healthCheck":"0","haircut":"0"}'
 
 # Update a child but only update the haircut
-curl -v -H 'Content-Type:application/json' -X PUT 'http://ec2-52-27-90-156.us-west-2.compute.amazonaws.com/backpack/api/child/300?updateOnly=haircut' -d '{"firstName":"Sandy","lastName":"Koufax","backpack":"1","healthCheck":"1","haircut":"1"}'
+curl -v -H 'Content-Type:application/json' -X PUT 'http://ec2-52-27-90-156.us-west-2.compute.amazonaws.com/backpack/api/child/301?updateOnly=haircut' -d '{"firstName":"Sandy","lastName":"Koufax","backpack":"1","healthCheck":"1","haircut":"1"}'
 
 # Update a child but only update the healthCheck
-curl -v -H 'Content-Type:application/json' -X PUT 'http://ec2-52-27-90-156.us-west-2.compute.amazonaws.com/backpack/api/child/300?updateOnly=healthCheck' -d '{"firstName":"Sandy","lastName":"Koufax","backpack":"1","healthCheck":"1","haircut":"1"}'
+curl -v -H 'Content-Type:application/json' -X PUT 'http://ec2-52-27-90-156.us-west-2.compute.amazonaws.com/backpack/api/child/301?updateOnly=healthCheck' -d '{"firstName":"Sandy","lastName":"Koufax","backpack":"1","healthCheck":"1","haircut":"1"}'
 
 # Update a child but only update the backpack
-curl -v -H 'Content-Type:application/json' -X PUT 'http://ec2-52-27-90-156.us-west-2.compute.amazonaws.com/backpack/api/child/300?updateOnly=backpack' -d '{"firstName":"Sandy","lastName":"Koufax","backpack":"1","healthCheck":"1","haircut":"1"}'
+curl -v -H 'Content-Type:application/json' -X PUT 'http://ec2-52-27-90-156.us-west-2.compute.amazonaws.com/backpack/api/child/301?updateOnly=backpack' -d '{"firstName":"Sandy","lastName":"Koufax","backpack":"1","healthCheck":"1","haircut":"1"}'
 
 # Delete a child
 curl -v -H 'Content-Type:application/json' -X DELETE 'http://ec2-52-27-90-156.us-west-2.compute.amazonaws.com/backpack/api/child/300'

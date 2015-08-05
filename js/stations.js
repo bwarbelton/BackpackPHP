@@ -47,22 +47,22 @@ var backpack = (function(BACKPACK) {
             $("#" + tableId + " tbody")
                 .append(
                 "<tr><td >"
-                + child.childId
+                + child.punchCardId
                 + "</td><td>"
                 + child.firstName
                 + "</td><td>"
                 + child.lastName
                 + "</td><td><input type=\"button\" value=\"Select\" onclick=\""
-                + this.name + ".getChild(" + child.childId
+                + this.name + ".getChild(" + child.punchCardId
                 + ")\" /></td></tr>");
 
         },
-        getChild : function(childId, whichStation) {
+        getChild : function(punchCardId, whichStation) {
             var that = this;
-            backpack.childDataAccess.getChildAsync(childId).done(
+            backpack.childDataAccess.getChildAsync(punchCardId).done(
                 function(data) {
                     var index= data.length - 1;
-                    that.setChildDetails(data.childId, data.firstName,
+                    that.setChildDetails(data.punchCardId, data.firstName,
                         data.lastName, data.backpack, data.healthCheck, data.haircut);
                     switch (whichStation) {
                         case 'haircut':
@@ -88,12 +88,6 @@ var backpack = (function(BACKPACK) {
                             }
                             break;
                         case 'backpack':
-                            if (data.healthCheck == 1 && data.haircut == 1) {
-                                $('#updateButton').prop('disabled', false);
-                            }
-                            else {
-                                $('#updateButton').prop('disabled', true);
-                            }
                             if (data.healthCheck == 1 && data.haircut == 1 && data.backpack == 1) {
                                 $('#statusButton').attr('style', 'background-color:green')
                                 $('#statusButton').val('All good to go!')
@@ -102,12 +96,19 @@ var backpack = (function(BACKPACK) {
                                 $('#statusButton').attr('style', 'background-color:yellow')
                                 $('#statusButton').val('Not all completed')
                             }
+                            // change in requirement. Allow update even if the other stations are not completed
+                            //if (data.healthCheck == 1 && data.haircut == 1) {
+                            //    $('#updateButton').prop('disabled', false);
+                            //}
+                            //else {
+                            //    $('#updateButton').prop('disabled', true);
+                            //}
                             break;
                     }
                 });
         },
-        setChildDetails : function(childId, firstName, lastName, backpack, healthCheck, haircut) {
-            $("#childId").val(childId);
+        setChildDetails : function(punchCardId, firstName, lastName, backpack, healthCheck, haircut) {
+            $("#childId").val(punchCardId);
             $("#firstName").val(firstName);
             $("#lastName").val(lastName);
             if (backpack > 0) {
@@ -208,70 +209,10 @@ function clearDetails() {
 }
 
 function lookupChild(whichStation) {
-    var childId = $("#childId").val();
+    var punchCardId = $("#childId").val();
     clearDetails();
-    childList.getChild(childId, whichStation);
+    childList.getChild(punchCardId, whichStation);
 }
-
-//old code
-//function saveChild() {
-//    var child = {};
-//    child.childId = $("#childId").val();
-//    child.firstName = $("#firstName").val();
-//    child.lastName = $("#lastName").val();
-//    child.backpack = $("#backpackCheckbox").prop("checked") ? 1 : 0;
-//    child.healthCheck = $("#healthCheckCheckbox").prop("checked") ? 1 : 0;
-//    child.haircut = $("#haircutCheckbox").prop("checked") ? 1 : 0;
-//    clearDetails();
-//    backpack.childDataAccess
-//        .getChildAsync(child.childId)
-//        .done(
-//        function(existingChild) {
-//            if (typeof (existingChild) !== "undefined"
-//                && existingChild.childId > 0) {
-//                backpack.childDataAccess
-//                    .updateChildAsync(child)
-//                    .done(
-//                    function(updatedChild) {
-//                        if (typeof (updatedChild) !== "undefined"
-//                            && updatedChild.childId > 0) {
-//                            childList
-//                                .getChild(updatedChild.childId);
-//                            childList
-//                                .refreshChildListTable(childList.childListTableId);
-//                        }
-//                    });
-//            } else {
-//                backpack.childDataAccess
-//                    .insertAsync(child)
-//                    .done(
-//                    function(updatedChild) {
-//                        if (typeof (updatedChild) !== "undefined"
-//                            && updatedChild.childId > 0) {
-//                            childList
-//                                .getChild(updatedChild.childId);
-//                            childList
-//                                .refreshChildListTable(childList.childListTableId);
-//                        }
-//                    });
-//            }
-//        })
-//        .fail(
-//        function() {
-//            backpack.childDataAccess
-//                .insertChildAsync(child)
-//                .done(
-//                function(insertedChild) {
-//                    if (typeof (insertedChild) !== "undefined"
-//                        && insertedChild.childId > 0) {
-//                        childList
-//                            .getChild(insertedChild.childId);
-//                        childList
-//                            .refreshChildListTable(childList.childListTableId);
-//                    }
-//                });
-//        });
-//}
 
 function setHaircutCompleted() {
     setStationCompleted("haircut");
@@ -285,13 +226,13 @@ function setBackpackCompleted() {
 
 function setStationCompleted(whichStation) {
     var child = {};
-    child.childId = $("#childId").val();
+    child.punchCardId = $("#childId").val();
     child.haircut = 1;
     child.healthCheck = 1;
     child.backpack = 1;
     clearDetails();
     backpack.childDataAccess
-        .getChildAsync(child.childId)
+        .getChildAsync(child.punchCardId)
         .done(
         function(existingChild) {
             if (typeof (existingChild) !== "undefined"
@@ -303,7 +244,7 @@ function setStationCompleted(whichStation) {
                         if (typeof (updatedChild) !== "undefined"
                             && updatedChild.childId > 0) {
                             childList
-                                .getChild(updatedChild.childId);
+                                .getChild(updatedChild.punchCardId);
                             childList
                                 .refreshChildListTable(childList.childListTableId);
                         }
@@ -316,7 +257,7 @@ function setStationCompleted(whichStation) {
                         if (typeof (updatedChild) !== "undefined"
                             && updatedChild.childId > 0) {
                             childList
-                                .getChild(updatedChild.childId);
+                                .getChild(updatedChild.punchCardId);
                             childList
                                 .refreshChildListTable(childList.childListTableId);
                         }
