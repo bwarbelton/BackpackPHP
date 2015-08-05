@@ -31,7 +31,7 @@ var backpack = (function(BACKPACK) {
 		addHeader : function(tableId) {
 			$("#" + tableId)
 					.html(
-							"<thead><tr><th width='50px;'>ID</th><th width='150px;'>First Name</th>" +
+							"<thead><tr><th width='50px;'>ID</th><th width='75px;'>Punch Card ID</th><th width='150px;'>First Name</th>" +
 							"<th width='200px'>Last Name</th><th width='100px'>Health Check</th><th width='100px'>Haircut</th>" +
 							"<th width='100px'>Backpack</th></tr></thead><tbody></tbody>");
 		},
@@ -55,6 +55,8 @@ var backpack = (function(BACKPACK) {
 							"<tr><td >"
 									+ child.childId
 									+ "</td><td>"
+									+ child.punchCardId
+									+ "</td><td>"
 									+ child.firstName
 									+ "</td><td>"
 									+ child.lastName
@@ -74,14 +76,18 @@ var backpack = (function(BACKPACK) {
 			backpack.childDataAccess.getChildAsync(childId).done(
 				function(data) {
 					//var index= data.length - 1;
-					that.setChildDetails(data.childId, data.firstName,
-						data.lastName, data.backpack, data.healthCheck, data.haircut);
+					that.setChildDetails(data.punchCardId, data.firstName,
+						data.lastName, data.address, data.city, data.state, data.zip, data.backpack, data.healthCheck, data.haircut);
 				});
 		},
-		setChildDetails : function(childId, firstName, lastName, backpack, healthCheck, haircut) {
-			$("#childId").val(childId);
+		setChildDetails : function(punchCardId, firstName, lastName, address, city, state, zip, backpack, healthCheck, haircut) {
+			$("#childId").val(punchCardId);
 			$("#firstName").val(firstName);
 			$("#lastName").val(lastName);
+			$("#address").val(address);
+			$("#city").val(city);
+			$("#state").val(state);
+			$("#zip").val(zip);
 			if (backpack > 0) {
 				$('#backpackCheckbox').prop('checked', true);
 			} else {
@@ -180,7 +186,7 @@ function lookupChild() {
 
 function saveChild() {
 	var child = {};
-	child.childId = $("#childId").val();
+	child.punchCardId = $("#childId").val();
 	child.firstName = $("#firstName").val();
 	child.lastName = $("#lastName").val();
 	child.backpack = $("#backpackCheckbox").prop("checked") ? 1 : 0;
@@ -188,19 +194,19 @@ function saveChild() {
 	child.haircut = $("#haircutCheckbox").prop("checked") ? 1 : 0;
 	clearDetails();
 	backpack.childDataAccess
-			.getChildAsync(child.childId)
+			.getChildAsync(child.punchCardId)
 			.done(
 					function(existingChild) {
 						if (typeof (existingChild) !== "undefined"
-								&& existingChild.childId > 0) {
+								&& existingChild.punchCardId > 0) {
 							backpack.childDataAccess
 									.updateChildAsync(child)
 									.done(
 											function(updatedChild) {
 												if (typeof (updatedChild) !== "undefined"
-														&& updatedChild.childId > 0) {
+														&& updatedChild.punchCardId > 0) {
 													childList
-															.getChild(updatedChild.childId);
+															.getChild(updatedChild.punchCardId);
 													childList
 															.refreshChildListTable(childList.childListTableId);
 												}
@@ -214,9 +220,9 @@ function saveChild() {
 								.done(
 										function(insertedChild) {
 											if (typeof (insertedChild) !== "undefined"
-													&& insertedChild.childId > 0) {
+													&& insertedChild.punchCardId > 0) {
 												childList
-														.getChild(insertedChild.childId);
+														.getChild(insertedChild.punchCardId);
 												childList
 														.refreshChildListTable(childList.childListTableId);
 											}
