@@ -60,15 +60,19 @@ var backpack = (function(BACKPACK) {
         getChild : function(childId, punchCardId, whichStation) {
             var that = this;
             var theIdToUse = 0;
-            if (punchCardId != '') {
+            if (punchCardId > 0) {
                 theIdToUse = punchCardId;
             } else {
-                theIdToUse = childId;
+                if (childId > 0) {
+                    theIdToUse = childId;
+                } else {
+                    return;
+                }
             }
-            backpack.childDataAccess.getChildAsync(punchCardId).done(
+            backpack.childDataAccess.getChildAsync(theIdToUse).done(
                 function(data) {
                     var index= data.length - 1;
-                    that.setChildDetails(data.punchCardId, data.firstName,
+                    that.setChildDetails(data.childId, data.punchCardId, data.firstName,
                         data.lastName, data.backpack, data.healthCheck, data.haircut);
                     switch (whichStation) {
                         case 'haircut':
@@ -113,8 +117,9 @@ var backpack = (function(BACKPACK) {
                     }
                 });
         },
-        setChildDetails : function(punchCardId, firstName, lastName, backpack, healthCheck, haircut) {
-            $("#childId").val(punchCardId);
+        setChildDetails : function(childId, punchCardId, firstName, lastName, backpack, healthCheck, haircut) {
+            $("#childId").val(childId);
+            $("#punchCardId").val(punchCardId);
             $("#firstName").val(firstName);
             $("#lastName").val(lastName);
             if (backpack > 0) {
@@ -209,9 +214,8 @@ function clearDetails() {
     $("#childId").val("");
     $("#firstName").val("");
     $("#lastName").val("");
-    $('#backpackCheckbox').prop('checked', false);
-    $('#healthCheckCheckbox').prop('checked', false);
-    $('#haircutCheckbox').prop('checked', false);
+    $("#haircutDiv").attr("style", "display:none");
+    $("#healthcheckDiv").attr("style", "display:none");
 }
 
 function lookupChild(whichStation) {
@@ -232,14 +236,20 @@ function setBackpackCompleted() {
 }
 
 function setStationCompleted(whichStation) {
+    var theIdToUse = 0;
+    if ($("#punchCardId").val() != '') {
+        theIdToUse = $("#punchCardId").val();
+    } else {
+        theIdToUse = $("#childId").val();
+    }
     var child = {};
-    child.punchCardId = $("#childId").val();
+    child.punchCardId = theIdToUse;
     child.haircut = 1;
     child.healthCheck = 1;
     child.backpack = 1;
     clearDetails();
     backpack.childDataAccess
-        .getChildAsync(child.punchCardId)
+        .getChildAsync(theIdToUse)
         .done(
         function(existingChild) {
             if (typeof (existingChild) !== "undefined"
@@ -252,8 +262,6 @@ function setStationCompleted(whichStation) {
                             && updatedChild.childId > 0) {
                             childList
                                 .getChild(updatedChild.punchCardId);
-                            childList
-                                .refreshChildListTable(childList.childListTableId);
                         }
                     });
             } else {
@@ -265,8 +273,6 @@ function setStationCompleted(whichStation) {
                             && updatedChild.childId > 0) {
                             childList
                                 .getChild(updatedChild.punchCardId);
-                            childList
-                                .refreshChildListTable(childList.childListTableId);
                         }
                     });
             }
