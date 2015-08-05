@@ -12,6 +12,7 @@ $(document).ready(
             //$("#haircutDiv").attr("style", "display:none");
             //$("#healthcheckDiv").attr("style", "display:none");
 			childList.initialize();
+			registration();
 			//// bindButtonEvents();
 		});
 

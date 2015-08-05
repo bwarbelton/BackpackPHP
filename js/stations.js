@@ -60,47 +60,50 @@ var backpack = (function(BACKPACK) {
         getChild : function(childId, punchCardId, whichStation) {
             var that = this;
             var theIdToUse = 0;
-            if (punchCardId != '') {
+            if (punchCardId > 0) {
                 theIdToUse = punchCardId;
             } else {
-                theIdToUse = childId;
+                if (childId > 0) {
+                    theIdToUse = childId;
+                } else {
+                    return;
+                }
             }
-            backpack.childDataAccess.getChildAsync(punchCardId).done(
+            backpack.childDataAccess.getChildAsync(theIdToUse).done(
                 function(data) {
                     var index= data.length - 1;
-                    that.setChildDetails(data.punchCardId, data.firstName,
-                        data.lastName, data.backpack, data.healthCheck, data.haircut);
+                    that.setChildDetails(data.childId, data.punchCardId, data.firstName);
                     switch (whichStation) {
                         case 'haircut':
-                            $('#updateButton').prop('disabled', false);
-                            if (data.haircut == 1) {
-                                $('#statusButton').attr('style', 'background-color:green')
-                                $('#statusButton').val('All good to go!')
+                            if (data.haircut == 1 && data.healthCheck == 1) {
+                                $('#statusButton').attr('style', 'background-color:green');
+                                $('#statusButton').val('All good to go!');
                             }
-                            else {
-                                $('#statusButton').attr('style', 'background-color:yellow')
-                                $('#statusButton').val('Not all completed')
+                            else { if(data.healthCheck != 1)
+                                $('#statusButton').attr('style', 'background-color:yellow');
+                                $('#statusButton').val('Not all completed');
+                                $('#updateButton').prop('disabled', true);
                             }
                             break;
                         case 'healthCheck':
-                            $('#updateButton').prop('disabled', false);
+                         //   $('#updateButton').prop('disabled', false);
                             if (data.healthCheck == 1) {
-                                $('#statusButton').attr('style', 'background-color:green')
-                                $('#statusButton').val('All good to go!')
+                                $('#statusButton').attr('style', 'background-color:green');
+                                $('#statusButton').val('All good to go!');
                             }
                             else {
-                                $('#statusButton').attr('style', 'background-color:yellow')
-                                $('#statusButton').val('Not all completed')
+                                $('#statusButton').attr('style', 'background-color:yellow');
+                                $('#statusButton').val('Not all completed');
                             }
                             break;
                         case 'backpack':
-                            if (data.healthCheck == 1 && data.haircut == 1 && data.backpack == 1) {
-                                $('#statusButton').attr('style', 'background-color:green')
-                                $('#statusButton').val('All good to go!')
+                            if ( data.backpack == 1) {
+                                $('#statusButton').attr('style', 'background-color:green');
+                                $('#statusButton').val('All good to go!');
                             }
                             else {
-                                $('#statusButton').attr('style', 'background-color:yellow')
-                                $('#statusButton').val('Not all completed')
+                                $('#statusButton').attr('style', 'background-color:yellow');
+                                $('#statusButton').val('Not all completed');
                             }
                             // change in requirement. Allow update even if the other stations are not completed
                             //if (data.healthCheck == 1 && data.haircut == 1) {
@@ -113,31 +116,11 @@ var backpack = (function(BACKPACK) {
                     }
                 });
         },
-        setChildDetails : function(punchCardId, firstName, lastName, backpack, healthCheck, haircut) {
-            $("#childId").val(punchCardId);
+        setChildDetails : function(childId, punchCardId, firstName) {
+            $("#childId").val(childId);
+            $("#punchCardId").val(punchCardId);
             $("#firstName").val(firstName);
-            $("#lastName").val(lastName);
-            if (backpack > 0) {
-      //          $('#backpackCheckbox').prop('checked', true);
-                $('#backpack').val('done');
-            } else {
-     //           $('#backpackCheckbox').prop('checked', false);
-                $('#backpack').val('not completed');
-            }
-            if (healthCheck > 0) {
-     //           $('#healthCheckCheckbox').prop('checked', true);
-                $('#healthcheck').val('done');
-            } else {
-    //            $('#healthCheckCheckbox').prop('checked', false);
-                $('#healthcheck').val('not completed');
-            }
-            if (haircut > 0) {
-     //           $('#haircutCheckbox').prop('checked', true);
-                $('#haircut').val('done');
-            } else {
-     //           $('#haircutCheckbox').prop('checked', false);
-                $('#haircut').val('not completed');
-            }		}
+        }
     }
     BACKPACK.createChildList = function(name, childListTableId,
                                         childDetailDivId) {
@@ -207,11 +190,10 @@ function listAll() {
 
 function clearDetails() {
     $("#childId").val("");
+    $("#punchCardId").val("");
     $("#firstName").val("");
-    $("#lastName").val("");
-    $('#backpackCheckbox').prop('checked', false);
-    $('#healthCheckCheckbox').prop('checked', false);
-    $('#haircutCheckbox').prop('checked', false);
+    $("#statusButton").val('status unknown')
+                      .attr("style", 'background-color:yellow');
 }
 
 function lookupChild(whichStation) {
@@ -232,14 +214,20 @@ function setBackpackCompleted() {
 }
 
 function setStationCompleted(whichStation) {
+    var theIdToUse = 0;
+    if ($("#punchCardId").val() != '') {
+        theIdToUse = $("#punchCardId").val();
+    } else {
+        theIdToUse = $("#childId").val();
+    }
     var child = {};
-    child.punchCardId = $("#childId").val();
+    child.punchCardId = theIdToUse;
     child.haircut = 1;
     child.healthCheck = 1;
     child.backpack = 1;
-    clearDetails();
+    clearDetails(whichStation);
     backpack.childDataAccess
-        .getChildAsync(child.punchCardId)
+        .getChildAsync(theIdToUse)
         .done(
         function(existingChild) {
             if (typeof (existingChild) !== "undefined"
@@ -252,8 +240,6 @@ function setStationCompleted(whichStation) {
                             && updatedChild.childId > 0) {
                             childList
                                 .getChild(updatedChild.punchCardId);
-                            childList
-                                .refreshChildListTable(childList.childListTableId);
                         }
                     });
             } else {
@@ -265,8 +251,6 @@ function setStationCompleted(whichStation) {
                             && updatedChild.childId > 0) {
                             childList
                                 .getChild(updatedChild.punchCardId);
-                            childList
-                                .refreshChildListTable(childList.childListTableId);
                         }
                     });
             }
