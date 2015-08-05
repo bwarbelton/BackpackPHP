@@ -36,11 +36,12 @@ function getChildren() {
 }
 
 function fetchChild($child_id) {
-    $sql = "select child_id AS childId, punch_card_id AS punchCardId, first_name AS firstName, last_name AS lastName, address, city, state, zip, race, school, backpack, healthCheck, haircut FROM child where punch_card_id =:child_id";
+    $sql = "select child_id AS childId, punch_card_id AS punchCardId, first_name AS firstName, last_name AS lastName, address, city, state, zip, race, school, backpack, healthCheck, haircut FROM child where child_id =:child_id OR punch_card_id =:punch_card_id";
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
         $stmt->bindParam("child_id", $child_id);
+        $stmt->bindParam("punch_card_id", $child_id);
         $stmt->execute();
         $child = $stmt->fetchObject();
         $db = null;
@@ -146,6 +147,7 @@ function putChild($child_id)
         $child = json_decode($request->getBody());
         $whichField = $request->params('updateOnly');
         $child->childId = $existingChild->childId;
+        $child->punchCardId = $existingChild->punchCardId;
         if ($whichField == null) {
             echo json_encode(updateAllFields($child_id, $child));
         } else {
@@ -157,12 +159,12 @@ function putChild($child_id)
 }
 
 function updateAllFields($punch_card_id, $child) {
-    $sql = "UPDATE child SET first_name=:first_name, last_name=:last_name, address=:address, city=:city, state=:state, zip=:zip, race=:race, school=:school, backpack=:backpack, healthCheck=:healthCheck, haircut=:haircut WHERE punch_card_id=:punch_card_id";
+    $sql = "UPDATE child SET first_name=:first_name, last_name=:last_name, address=:address, city=:city, state=:state, zip=:zip, race=:race, school=:school, backpack=:backpack, healthCheck=:healthCheck, haircut=:haircut WHERE child_id =:child_id OR punch_card_id =:punch_card_id";
     try {
-        $child->punchCardId = $punch_card_id;
         $db = getConnection();
         $stmt = $db->prepare($sql);
-        $stmt->bindParam("punch_card_id", $punch_card_id);
+        $stmt->bindParam("child_id", $child->childId);
+        $stmt->bindParam("punch_card_id", $child->punchCardId);
         $stmt->bindParam("first_name", $child->firstName);
         $stmt->bindParam("last_name", $child->lastName);
         $stmt->bindParam("address", $child->address);
@@ -189,7 +191,7 @@ function updateOnly($child_id, $child, $whichField)
     try {
         $existingChild = fetchChild($child_id);
         $child->childId = $existingChild->childId;
-        $child->punchCardId = $child_id;
+        $child->punchCardId = $existingChild->punchCardId;
         $child->firstName = $existingChild->firstName;
         $child->lastName = $existingChild->lastName;
         $child->address = $existingChild->address;
@@ -203,27 +205,30 @@ function updateOnly($child_id, $child, $whichField)
             case "haircut":
                 $child->healthCheck = $existingChild->healthCheck;
                 $child->backpack = $existingChild->backpack;
-                $sql = "UPDATE child SET haircut=:haircut WHERE punch_card_id=:child_id";
+                $sql = "UPDATE child SET haircut=:haircut WHERE child_id =:child_id OR punch_card_id =:punch_card_id";
                 $stmt = $db->prepare($sql);
-                $stmt->bindParam("child_id", $child_id);
+                $stmt->bindParam("child_id", $child->childId);
+                $stmt->bindParam("punch_card_id", $child->punchCardId);
                 $stmt->bindParam("haircut", $child->haircut);
                 $stmt->execute();
                 break;
             case "healthCheck":
                 $child->haircut = $existingChild->haircut;
                 $child->backpack = $existingChild->backpack;
-                $sql = "UPDATE child SET healthCheck=:healthCheck WHERE punch_card_id=:child_id";
+                $sql = "UPDATE child SET healthCheck=:healthCheck WHERE child_id =:child_id OR punch_card_id =:punch_card_id";
                 $stmt = $db->prepare($sql);
-                $stmt->bindParam("child_id", $child_id);
+                $stmt->bindParam("child_id", $child->childId);
+                $stmt->bindParam("punch_card_id", $child->punchCardId);
                 $stmt->bindParam("healthCheck", $child->healthCheck);
                 $stmt->execute();
                 break;
             case "backpack":
                 $child->healthCheck = $existingChild->healthCheck;
                 $child->haircut = $existingChild->haircut;
-                $sql = "UPDATE child SET backpack=:backpack WHERE punch_card_id=:child_id";
+                $sql = "UPDATE child SET backpack=:backpack WHERE child_id =:child_id OR punch_card_id =:punch_card_id";
                 $stmt = $db->prepare($sql);
-                $stmt->bindParam("child_id", $child_id);
+                $stmt->bindParam("child_id", $child->childId);
+                $stmt->bindParam("punch_card_id", $child->punchCardId);
                 $stmt->bindParam("backpack", $child->backpack);
                 $stmt->execute();
                 break;
@@ -236,7 +241,7 @@ function updateOnly($child_id, $child, $whichField)
 }
 
 function deleteChild($child_id) {
-    $sql = "DELETE FROM child WHERE punch_card_id=:child_id";
+    $sql = "DELETE FROM child WHERE child_id=:child_id OR punch_card_id=:child_id";
     try {
         $db = getConnection();
         $stmt = $db->prepare($sql);
