@@ -64,10 +64,28 @@ var backpack = (function(BACKPACK) {
                     var index= data.length - 1;
                     that.setChildDetails(data.childId, data.firstName,
                         data.lastName, data.backpack, data.healthCheck, data.haircut);
-                    switch (whichStation){
+                    switch (whichStation) {
                         case 'haircut':
+                            $('#updateButton').prop('disabled', false);
+                            if (data.haircut == 1) {
+                                $('#statusButton').attr('style', 'background-color:green')
+                                $('#statusButton').val('All good to go!')
+                            }
+                            else {
+                                $('#statusButton').attr('style', 'background-color:yellow')
+                                $('#statusButton').val('Not all completed')
+                            }
+                            break;
                         case 'healthCheck':
                             $('#updateButton').prop('disabled', false);
+                            if (data.healthCheck == 1) {
+                                $('#statusButton').attr('style', 'background-color:green')
+                                $('#statusButton').val('All good to go!')
+                            }
+                            else {
+                                $('#statusButton').attr('style', 'background-color:yellow')
+                                $('#statusButton').val('Not all completed')
+                            }
                             break;
                         case 'backpack':
                             if (data.healthCheck == 1 && data.haircut == 1) {
@@ -76,16 +94,15 @@ var backpack = (function(BACKPACK) {
                             else {
                                 $('#updateButton').prop('disabled', true);
                             }
+                            if (data.healthCheck == 1 && data.haircut == 1 && data.backpack == 1) {
+                                $('#statusButton').attr('style', 'background-color:green')
+                                $('#statusButton').val('All good to go!')
+                            }
+                            else {
+                                $('#statusButton').attr('style', 'background-color:yellow')
+                                $('#statusButton').val('Not all completed')
+                            }
                             break;
-                    }
-
-                    if (data.healthCheck == 1 && data.haircut == 1 && data.backpack == 1) {
-                        $('#statusButton').attr('style', 'background-color:green')
-                        $('#statusButton').val('All good to go!')
-                    }
-                    else {
-                        $('#statusButton').attr('style', 'background-color:yellow')
-                        $('#statusButton').val('Not all completed')
                     }
                 });
         },
