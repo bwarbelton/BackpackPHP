@@ -57,8 +57,14 @@ var backpack = (function(BACKPACK) {
                 + ")\" /></td></tr>");
 
         },
-        getChild : function(punchCardId, whichStation) {
+        getChild : function(childId, punchCardId, whichStation) {
             var that = this;
+            var theIdToUse = 0;
+            if (punchCardId != '') {
+                theIdToUse = punchCardId;
+            } else {
+                theIdToUse = childId;
+            }
             backpack.childDataAccess.getChildAsync(punchCardId).done(
                 function(data) {
                     var index= data.length - 1;
@@ -209,9 +215,10 @@ function clearDetails() {
 }
 
 function lookupChild(whichStation) {
-    var punchCardId = $("#childId").val();
+    var punchCardId = $("#punchCardId").val();
+    var childId = $("#childId").val();
     clearDetails();
-    childList.getChild(punchCardId, whichStation);
+    childList.getChild(childId, punchCardId, whichStation);
 }
 
 function setHaircutCompleted() {
