@@ -17,12 +17,23 @@
 <h2>Kutz4Kidz Haircuts</h2><br/>
 <img src="../image/haircut.jpg" style="height: 100px; width: 100px; display: block; margin-left: auto; margin-right: auto" />
 <div id="childDetailDiv" class="upload_form">
-    <label>Child Id</label><input id="childId" type="text"/>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(type or scan barcode)<br />
-    <label>&nbsp;</label>
-    <input id=lookupButton type="button" value="Lookup" onClick="lookupChild('haircut')" /><br />
+    <table>
+        <tr>
+            <td>
+                <label>Child Id</label><input id="childId" type="text"/>&nbsp;&nbsp; OR &nbsp;&nbsp
+            </td>
+            <td>
+                <label>Punchcard Id </label><input id="punchCardId" type="text"/>
+            </td>
+            <td>
+                <input id=lookupButton type="button" value="Lookup" style="margin-left: 50px;" onClick="lookupChild('haircut')" />
+            </td>
+        </tr>
+    </table>
     <p>&nbsp;</p>
-    <label>First Name &nbsp;&nbsp; </label><input id="firstName" type="text" /><br />
+    <label>First Name &nbsp;&nbsp; </label><input id="firstName" type="text" /><br /><br />
+    <!--add updates for healthcheck-->
+    <label>Health Check</label><input id="healthcheck" type="text" readonly /> <br/><br/>
     <input id=statusButton type="button" value="Status Unknown" disabled style="background-color: yellow;" />
     <label>&nbsp;</label><input id=updateButton type="button" value="Set Completed" onClick="setHaircutCompleted()" />
 </div>
