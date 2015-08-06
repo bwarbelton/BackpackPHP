@@ -35,9 +35,12 @@
     <label>Id to find &nbsp;&nbsp; </label><input id="lookupId" type="text"></input>
     <input id=lookupByIdButton type="button" value="Lookup" onClick="lookupChild()" /><br />
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(type Child Id or Punch Card Id)<br />
-    <label>First Name &nbsp;&nbsp; </label><input id="lookupFirstName" type="text"></input>
-    <label>Last Name &nbsp;&nbsp; </label><input id="lookupLastName" type="text"></input>
-    <input id=lookupByNameButton type="button" value="Lookup" onClick="lookupChildByName()" /><br />
+    <label>First Name &nbsp;&nbsp; </label><input id="firstNameLookup" type="text"></input>
+    <label>Last Name &nbsp;&nbsp; </label><input id="lastNameLookup" type="text"></input>
+    <input id=lookupByNameButton type="button" value="Lookup" onClick="lookupChildrenByName()" /><br />
+    <div id="childListDiv" style="display: none; float: left;">
+    <table id="childListTable" style="background-color: rgba(0, 0, 0, 0.15);"></table>
+    </div>
     <div id="childDetailDiv" class="upload_form" style="float:right;">
         <label>Child Id &nbsp;&nbsp; </label><input id="childId" type="text" disabled></input>This is auto generated<br /><br/>
         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Input info below to save new or change</p><br />

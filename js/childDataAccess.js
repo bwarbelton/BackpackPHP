@@ -145,5 +145,31 @@ var childDataAccess = (function(CHILDDATAACCESS) {
 			});		
 		return deferredList.promise();
 	};
+	CHILDDATAACCESS.getChildrenByNameAsync = function(childId, firstName, lastName) {
+		var that = this;
+		var queryString = 'firstName=first name not found';
+		if (firstName != null && firstName.trim() != '') {
+			queryString = 'firstName=' + firstName;
+			if (lastName != null && lastName.trim() != '') {
+				queryString += '&lastName=' + lastName;
+			}
+		} else if (lastName != null && lastName.trim() != '') {
+			queryString = 'lastName=' + lastName;
+		}
+		var deferredList = new jQuery.Deferred();
+		$.ajax({
+			type: "GET",
+			url: backpack.baseUrl + '/backpack/api/children?' + queryString,
+			success: function(fetchResult) {
+				that.lastRequest = backpack.baseUrl + '/backpack/api/children?'+ queryString;
+				deferredList.resolve(fetchResult);
+			},
+			error: function() {
+				deferredList.reject([]);
+			},
+			dataType: "json"
+		});
+		return deferredList.promise();
+	};
 	return CHILDDATAACCESS;
 }(childDataAccess || {}));
