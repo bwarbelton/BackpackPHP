@@ -36,6 +36,17 @@ var backpack = (function(BACKPACK) {
 							"<th width='200px'>Last Name</th><th width='100px'>Health Check</th><th width='100px'>Haircut</th>" +
 							"<th width='100px'>Backpack</th></tr></thead><tbody></tbody>");
 		},
+		getChildrenByName : function(childId, firstName, lastName) {
+			var that = this;
+			var tableId = this.childListTableId;
+			$("#" + tableId + " tbody tr").remove();
+			backpack.childDataAccess.getChildrenByNameAsync(childId, firstName, lastName).done(function(list) {
+				$.each(list, function(key, val) {
+					that.addChildRow(tableId, val);
+				});
+			});
+			$('#childListDiv').attr("style", "display:block");
+		},
 		refreshChildListTable : function(tableId) {
 			var that = this;
 			$("#" + tableId + " tbody tr").remove();
@@ -105,7 +116,11 @@ var backpack = (function(BACKPACK) {
 				$('#haircutCheckbox').prop('checked', true);
 			} else {
 				$('#haircutCheckbox').prop('checked', false);
-			}		}
+			}
+		},
+		clearTable : function() {
+			$("#" + this.childListTableId + " tbody tr").remove();
+		}
 	};
 	BACKPACK.createChildList = function(name, childListTableId,
 			childDetailDivId) {
@@ -121,6 +136,20 @@ var backpack = (function(BACKPACK) {
 backpack.baseUrl = $(location).attr('protocol') + '//'
 		+ $(location).attr('host');
 backpack.childDataAccess = childDataAccess;
+
+function clearChildListTable() {
+	childList.clearTable();
+}
+
+function lookupChildrenByName() {
+	var childId = $("#lookupId").val();
+	var firstName = $("#firstNameLookup").val();
+	var lastName = $("#lastNameLookup").val();
+	clearDetails();
+	clearChildListTable();
+	childList.getChildrenByName(childId, firstName, lastName);
+	$("#childListDiv").attr("style", "display:block");
+}
 
 function registration() {
 	$("#childDetailDiv").attr("style", "display:block");
@@ -190,7 +219,9 @@ function clearDetails() {
 function lookupChild() {
 	var childId = $("#lookupId").val();
 	clearDetails();
+	clearChildListTable();
 	childList.getChild(childId);
+	$("#childListDiv").attr("style", "display:none");
 }
 
 function saveChild() {
