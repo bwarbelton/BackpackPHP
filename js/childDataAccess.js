@@ -62,14 +62,14 @@ var childDataAccess = (function(CHILDDATAACCESS) {
 		var deferredList = new jQuery.Deferred();
 			$.ajax({
 				type: "PUT",
-				url: backpack.baseUrl + '/backpack/api/child/' + child.punchCardId,
+				url: backpack.baseUrl + '/backpack/api/child/' + child.childId,
 				data: JSON.stringify(child),
 				contentType: 'application/json',
 				dataType: 'json',
 				headers: { "x-content-type-options": "nosniff" },
 				success: function(fetchResult) {
 					if (typeof(fetchResult) !== "undefined") {
-						that.lastRequest = backpack.baseUrl + '/backpack/api/child/' + child.punchCardId;
+						that.lastRequest = backpack.baseUrl + '/backpack/api/child/' + child.childId;
 						deferredList.resolve(fetchResult);
 					} else {
 						var childNotFound = {};
@@ -89,14 +89,14 @@ var childDataAccess = (function(CHILDDATAACCESS) {
 		var deferredList = new jQuery.Deferred();
 		$.ajax({
 			type: "PUT",
-			url: backpack.baseUrl + '/backpack/api/child/' + child.punchCardId + '?updateOnly=' + whichField,
+			url: backpack.baseUrl + '/backpack/api/child/' + child.childId + '?updateOnly=' + whichField,
 			data: JSON.stringify(child),
 			contentType: 'application/json',
 			dataType: 'json',
 			headers: { "x-content-type-options": "nosniff" },
 			success: function(fetchResult) {
 				if (typeof(fetchResult) !== "undefined") {
-					that.lastRequest = backpack.baseUrl + '/backpack/api/child/' + child.punchCardId + '?updateOnly=' + whichField;
+					that.lastRequest = backpack.baseUrl + '/backpack/api/child/' + child.childId + '?updateOnly=' + whichField;
 					deferredList.resolve(fetchResult);
 				} else {
 					var childNotFound = {};

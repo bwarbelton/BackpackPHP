@@ -27,7 +27,7 @@ var backpack = (function(BACKPACK) {
 		childDetailDivId : "",
 		initialize : function() {
 			this.addHeader(this.childListTableId);
-			this.refreshChildListTable(this.childListTableId);
+			// this.refreshChildListTable(this.childListTableId);
 		},
 		addHeader : function(tableId) {
 			$("#" + tableId)
@@ -225,6 +225,29 @@ function lookupChild() {
 }
 
 function saveChild() {
+	var child = getChildAsObject();
+	clearMessages();
+	backpack.childDataAccess
+			.getChildAsync(child.punchCardId)
+			.done(
+					function(existingChild) {
+						if (typeof (existingChild) !== "undefined"
+								&& existingChild.punchCardId > 0) {
+							showMessage1("This punch card id has already been entered.");
+							showMessage2("Was the intent to update?");
+						} else {
+							clearDetails();
+							doInsert(child);
+						}
+					})
+			.fail(
+					function() {
+						showMessage1("Unable to insert");
+						showMessage2("");
+					});
+}
+
+function getChildAsObject() {
 	var child = {};
 	child.childId = $("#childId").val();
 	child.punchCardId = $("#punchCardId").val();
@@ -238,33 +261,43 @@ function saveChild() {
 	child.backpack = $("#backpackCheckbox").prop("checked") ? 1 : 0;
 	child.healthCheck = $("#healthCheckCheckbox").prop("checked") ? 1 : 0;
 	child.haircut = $("#haircutCheckbox").prop("checked") ? 1 : 0;
-	clearDetails();
-	backpack.childDataAccess
-			.getChildAsync(child.punchCardId)
-			.done(
-					function(existingChild) {
-						if (typeof (existingChild) !== "undefined"
-								&& existingChild.punchCardId > 0) {
-							backpack.childDataAccess
-									.updateChildAsync(child)
-									.done(
-											function(updatedChild) {
-												if (typeof (updatedChild) !== "undefined"
-														&& updatedChild.punchCardId > 0) {
-													childList
-															.getChild(updatedChild.punchCardId);
-													childList
-															.refreshChildListTable(childList.childListTableId);
-												}
-											});
-						} else {
-							doInsert(child);
+	return child;
+}
+
+function updateChild() {
+	var child = getChildAsObject();
+	clearMessages();
+	backpack.childDataAccess.getChildAsync(child.childId)
+		.done(
+		function(existingChild) {
+			if (typeof (existingChild) !== "undefined") {
+				if (existingChild.punchCardId == child.punchCardId || child.punchCardId == 0) {
+					clearDetails();
+					doUpdate(child);
+				} else {
+					backpack.childDataAccess.getChildAsync(child.punchCardId)
+						.done(
+						function(existingPunchcardRecord) {
+							if (typeof (existingPunchcardRecord) !== "undefined") {
+								showMessage1("This punch card id has already been used.");
+								showMessage2("Please use another punch card id");
+							} else {
+								clearDetails();
+								doUpdate(child);
+							}
 						}
-					})
-			.fail(
-					function() {
-						doInsert(child);
-					});
+					);
+				}
+			} else {
+				showMessage1("This record does not exist.");
+				showMessage2("Please save instead of update.");
+			}
+		})
+		.fail(
+		function() {
+			showMessage1("Unable to update");
+			showMessage2("Check that the punch card id is not already used.");
+		});
 }
 
 function doInsert(child) {
@@ -276,11 +309,36 @@ function doInsert(child) {
 		.done(
 		function(insertedChild) {
 			if (typeof (insertedChild) !== "undefined"
-				&& insertedChild.punchCardId > 0) {
+				// && insertedChild.punchCardId > 0
+			) {
 				childList
-					.getChild(insertedChild.punchCardId);
-				childList
-					.refreshChildListTable(childList.childListTableId);
+					.getChild(insertedChild.childId);
+				// childList.refreshChildListTable(childList.childListTableId);
 			}
 		});
+}
+
+function doUpdate(child) {
+	backpack.childDataAccess
+		.updateChildAsync(child)
+		.done(
+		function(updatedChild) {
+			if (typeof (updatedChild) !== "undefined") {
+				childList
+					.getChild(updatedChild.childId);
+			}
+		});
+}
+
+function showMessage1(message) {
+	$("#message1").text(message);
+}
+
+function showMessage2(message) {
+	$("#message2").text(message);
+}
+
+function clearMessages() {
+	$("#message1").text('');
+	$("#message2").text('');
 }
