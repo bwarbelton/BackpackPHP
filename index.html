@@ -43,7 +43,7 @@
     </div>
     <div id="childDetailDiv" class="upload_form" style="float:right;">
         <label>Child Id &nbsp;&nbsp; </label><input id="childId" type="text" disabled></input>This is auto generated<br /><br/>
-        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Input info below to save new or change</p><br />
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Input info below to save new or change</p>
         <label>Punch Card Id &nbsp;&nbsp; </label><input id="punchCardId" type="text"></input><br /><br/>
         <label>First Name &nbsp;&nbsp; </label><input id="firstName" type="text"></input><br /><br/>
         <label>Last Name &nbsp;&nbsp; </label><input id="lastName" type="text"></input><br /><br/>
@@ -70,11 +70,14 @@
         <br/>
         <input id=clearButton type="button" value="Clear" onClick="clearDetails()" />&nbsp;
         <input id=saveButton type="button" value="Save" onClick="saveChild()" />
+        <input id=updateButton type="button" value="Update" onClick="updateChild()" />
+        <label id="message1">&nbsp;</label>
+        <label id="message2">&nbsp;</label>
     </div>
     <p></p>
-    <div id="childListDiv" style="display: none;">
-        <table id="childListTable" style="background-color: rgba(0, 0, 0, 0.15);"></table>
-    </div>
+    <!--<div id="childListDiv" style="display: none;">-->
+        <!--<table id="childListTable" style="background-color: rgba(0, 0, 0, 0.15);"></table>-->
+    <!--</div>-->
 </div>
 <script src="./js/jquery-2.1.4.js"></script>
 <script src="./js/childDataAccess.js"></script>

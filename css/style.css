@@ -17,7 +17,6 @@ body {
 :-moz-placeholder {
 	color: blue;
 }
- CMake: Windows Client Version: 3.8.11.2 (cmake-2.8.11.2-win32-x86.exe) (http://www.cmake.org/cmake/resources/software.html) Install to defaults. It is important to have this version as the Cuda and IPP modules have been changing and older version have been shown not to work with these build scripts.
 ::-webkit-input-placeholder {
     color: blue;
 }
@@ -67,6 +66,7 @@ body {
     display:inline-block;
     float:left;
     padding:3px;
+    font-size: 14px;
 }
 .upload_form input {
     /*height:20px; */

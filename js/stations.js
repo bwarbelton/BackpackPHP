@@ -26,12 +26,30 @@ var backpack = (function(BACKPACK) {
         childDetailDivId : "",
         initialize : function() {
             this.addHeader(this.childListTableId);
-            this.refreshChildListTable(this.childListTableId);
+            //this.refreshChildListTable(this.childListTableId);
         },
         addHeader : function(tableId) {
             $("#" + tableId)
                 .html(
-                "<thead><tr><th width='50px;'>ID</th><th width='150px;'>First Name</th><th width='200px'>Last Name</th></tr></thead><tbody></tbody>");
+                "<thead>" +
+                    "<tr>" +
+                        "<th width='50px;' style='font-size: 14px;'>ID</th>" +
+                        "<th width='120px;' style='font-size: 14px;'>First Name</th>" +
+                        "<th width='150px' style='font-size: 14px;'>Last Name</th>" +
+                    "</tr>" +
+                "</thead>" +
+                "<tbody></tbody>");
+        },
+        getChildrenByName : function(childId, firstName, lastName) {
+            var that = this;
+            var tableId = this.childListTableId;
+            $("#" + tableId + " tbody tr").remove();
+            backpack.childDataAccess.getChildrenByNameAsync(childId, firstName, lastName).done(function(list) {
+                $.each(list, function(key, val) {
+                    that.addChildRow(tableId, val);
+                });
+            });
+            $('#childListDiv').attr("style", "display:block");
         },
         refreshChildListTable : function(tableId) {
             var that = this;
@@ -46,13 +64,13 @@ var backpack = (function(BACKPACK) {
         addChildRow : function(tableId, child) {
             $("#" + tableId + " tbody")
                 .append(
-                "<tr><td >"
+                "<tr><td style='font-size: 14px;'>"
                 + child.punchCardId
-                + "</td><td>"
+                + "</td><td style='font-size: 14px;'>"
                 + child.firstName
-                + "</td><td>"
+                + "</td><td style='font-size: 14px;'>"
                 + child.lastName
-                + "</td><td><input type=\"button\" value=\"Select\" onclick=\""
+                + "</td><td><input type=\"button\" value=\"Select\" style=\"font-size: 14px;\" onclick=\""
                 + this.name + ".getChild(" + child.punchCardId
                 + ")\" /></td></tr>");
 
@@ -78,32 +96,44 @@ var backpack = (function(BACKPACK) {
                             if (data.haircut == 1 && data.healthCheck == 1) {
                                 $('#statusButton').attr('style', 'background-color:green');
                                 $('#statusButton').val('All good to go!');
-                            }
-                            else { if(data.healthCheck != 1)
-                                $('#statusButton').attr('style', 'background-color:yellow');
-                                $('#statusButton').val('Not all completed');
                                 $('#updateButton').prop('disabled', true);
                             }
+                            else if(data.healthCheck != 1){
+                                    $('#statusButton').attr('style', 'background-color:yellow');
+                                    $('#statusButton').val('Not all completed');
+                                    $('#updateButton').prop('disabled', true);
+                                }
+                                else {
+                                    //healthcheck is done; display DONE on screen
+                                    $('#healthcheck').val('DONE');
+                                    $('#statusButton').attr('style', 'background-color:yellow');
+                                    $('#statusButton').val('Not all completed');
+                                    $('#updateButton').prop('disabled', false);
+                                }
                             break;
                         case 'healthCheck':
                          //   $('#updateButton').prop('disabled', false);
                             if (data.healthCheck == 1) {
                                 $('#statusButton').attr('style', 'background-color:green');
                                 $('#statusButton').val('All good to go!');
+                                $('#updateButton').prop('disabled', true);
                             }
                             else {
                                 $('#statusButton').attr('style', 'background-color:yellow');
                                 $('#statusButton').val('Not all completed');
+                                $('#updateButton').prop('disabled', false);
                             }
                             break;
                         case 'backpack':
                             if ( data.backpack == 1) {
                                 $('#statusButton').attr('style', 'background-color:green');
                                 $('#statusButton').val('All good to go!');
+                                $('#updateButton').prop('disabled', true);
                             }
                             else {
                                 $('#statusButton').attr('style', 'background-color:yellow');
                                 $('#statusButton').val('Not all completed');
+                                $('#updateButton').prop('disabled', false);
                             }
                             // change in requirement. Allow update even if the other stations are not completed
                             //if (data.healthCheck == 1 && data.haircut == 1) {
@@ -120,8 +150,11 @@ var backpack = (function(BACKPACK) {
             $("#childId").val(childId);
             $("#punchCardId").val(punchCardId);
             $("#firstName").val(firstName);
+        },
+        clearTable : function() {
+            $("#" + this.childListTableId + " tbody tr").remove();
         }
-    }
+    };
     BACKPACK.createChildList = function(name, childListTableId,
                                         childDetailDivId) {
         var newChildList = Object.create(BACKPACK.childList);
@@ -129,13 +162,24 @@ var backpack = (function(BACKPACK) {
         newChildList.childListTableId = childListTableId;
         newChildList.childDetailDivId = childDetailDivId;
         return newChildList;
-    }
+    };
     return BACKPACK;
 }(backpack || {}));
 
 backpack.baseUrl = $(location).attr('protocol') + '//'
     + $(location).attr('host');
 backpack.childDataAccess = childDataAccess;
+
+function lookupChildrenByName() {
+    var childId = $("#lookupId").val();
+    var firstName = $("#firstNameLookup").val();
+    var lastName = $("#lastNameLookup").val();
+    clearDetails();
+    clearChildListTable();
+    childList.getChildrenByName(childId, firstName, lastName);
+    $("#childListDiv").attr("style", "display:block");
+}
+
 
 function registration() {
    // $("#registrationDiv").attr("style", "display:block");
@@ -195,6 +239,9 @@ function clearDetails() {
     $("#statusButton").val('status unknown')
                       .attr("style", 'background-color:yellow');
 }
+function clearChildListTable() {
+    childList.clearTable();
+}
 
 function lookupChild(whichStation) {
     var punchCardId = $("#punchCardId").val();
@@ -215,13 +262,15 @@ function setBackpackCompleted() {
 
 function setStationCompleted(whichStation) {
     var theIdToUse = 0;
+    var punchCardIdEntered = 0;
     if ($("#punchCardId").val() != '') {
         theIdToUse = $("#punchCardId").val();
+        punchCardIdEntered = $("#punchCardId").val();
     } else {
         theIdToUse = $("#childId").val();
     }
     var child = {};
-    child.punchCardId = theIdToUse;
+    child.childId = theIdToUse;
     child.haircut = 1;
     child.healthCheck = 1;
     child.backpack = 1;
@@ -232,6 +281,7 @@ function setStationCompleted(whichStation) {
         function(existingChild) {
             if (typeof (existingChild) !== "undefined"
                 && existingChild.childId > 0) {
+                child.childId = existingChild.childId;
                 backpack.childDataAccess
                     .updateOnlyAsync(child, whichStation)
                     .done(
@@ -239,10 +289,11 @@ function setStationCompleted(whichStation) {
                         if (typeof (updatedChild) !== "undefined"
                             && updatedChild.childId > 0) {
                             childList
-                                .getChild(updatedChild.punchCardId);
+                                .getChild(updatedChild.childId, updatedChild.punchCardId, whichStation);
                         }
                     });
             } else {
+                child.punchCardId = punchCardIdEntered;
                 backpack.childDataAccess
                     .insertOnlyAsync(child, whichStation)
                     .done(
@@ -250,7 +301,7 @@ function setStationCompleted(whichStation) {
                         if (typeof (updatedChild) !== "undefined"
                             && updatedChild.childId > 0) {
                             childList
-                                .getChild(updatedChild.punchCardId);
+                                .getChild(updatedChild.childId, updatedChild.punchCardId, whichStation);
                         }
                     });
             }
