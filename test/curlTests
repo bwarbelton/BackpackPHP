@@ -1,6 +1,9 @@
 # Get all children
 curl -v -H 'Content-Type:application/json' -X GET 'http://ec2-52-27-90-156.us-west-2.compute.amazonaws.com/backpack/api/children'
 
+# Get all children by name
+curl -v -H 'Content-Type:application/json' -X GET 'http://ec2-52-27-90-156.us-west-2.compute.amazonaws.com/backpack/api/children?firstName=Han&LastName=Ba'
+
 # Get a child. Assume there is one with child_id 325
 curl -v -H 'Content-Type:application/json' -X GET 'http://ec2-52-27-90-156.us-west-2.compute.amazonaws.com/backpack/api/child/325'
 

@@ -16,12 +16,15 @@
 <body style="background-image:none">
 <h2>Kutz4Kidz Backpack</h2><br/>
 <img src="../image/backpack.jpg" style="height: 100px; width: 100px; display: block; margin-left: auto; margin-right: auto" />
+<h5>Lookup by ID:</h5>
 <div id="childDetailDiv" class="upload_form">
     <table>
         <tr>
             <td>
-                <label for="punchCardId">Punchcard Id </label><input id="punchCardId" type="text"/>&nbsp;&nbsp; OR &nbsp;&nbsp
+                <label for="punchCardId">Punchcard Id </label><input id="punchCardId" type="text"/>&nbsp;&nbsp; OR
             </td>
+        </tr>
+        <tr>
             <td>
                 <label for="childId">Child Id</label><input id="childId" type="text"/>
             </td>
@@ -30,7 +33,24 @@
             </td>
         </tr>
     </table>
-    <p>&nbsp;</p>
+    <br/>
+    <h5>OR Lookup by name:</h5>
+    <table>
+        <tr>
+            <td>
+                <label for="firstNameLookup">First Name </label><input id="firstNameLookup" type="text"/>&nbsp;&nbsp; &nbsp;&nbsp
+            </td>
+            <td>
+                <label for="lastName">Last Name</label><input id="lastName" type="text"/>
+            </td>
+            <td>
+                <input id=lookupButton2 type="button" value="Lookup" style="margin-left: 70px;" onClick="lookupChild('backpack')" />
+            </td>
+        </tr>
+    </table>
+    <br/>
+    <p>---------------------------------------------------------------------------------------------</p>
+    <br/>
     <label>First Name &nbsp;&nbsp; </label><input id="firstName" type="text" /><br /><br/>
     <!--add updates for healthcheck & haircut-->
     <!--<label>Health Check</label><input id="healthcheck" type="text" readonly /> <br/><br/>-->
@@ -40,6 +60,7 @@
     <input id=statusButton type="button" value="Not all completed" disabled style="background-color: yellow;" />
     <label>&nbsp;</label><input id=updateButton type="button" value="Set Completed" onClick="setBackpackCompleted()" />
 </div>
+
 <script src="../js/jquery-2.1.4.js"></script>
 <script src="../js/childDataAccess.js"></script>
 <script src="../js/stations.js"></script>

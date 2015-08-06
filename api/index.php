@@ -99,12 +99,18 @@ function postNewChild()
     if ($child->punchCardId != 0 && $child->punchCardId > 0) {
         $existingChild = fetchChild($child->punchCardId);
         if ($existingChild == false) {
-            if ($whichField == null) {
-                echo json_encode(insertAllFields($child));
-            } else {
-                echo json_encode(insertOnly($child, $whichField));
-            }
+            doPost($child, $whichField);
         }
+    } else {
+        doPost($child, $whichField);
+    }
+}
+
+function doPost($child, $whichField) {
+    if ($whichField == null) {
+        echo json_encode(insertAllFields($child));
+    } else {
+        echo json_encode(insertOnly($child, $whichField));
     }
 }
 
