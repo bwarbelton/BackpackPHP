@@ -77,18 +77,20 @@ var backpack = (function(BACKPACK) {
 			backpack.childDataAccess.getChildAsync(childId).done(
 				function(data) {
 					//var index= data.length - 1;
-					that.setChildDetails(data.punchCardId, data.firstName,
-						data.lastName, data.address, data.city, data.state, data.zip, data.backpack, data.healthCheck, data.haircut);
+					that.setChildDetails(data.childId, data.punchCardId, data.firstName,
+						data.lastName, data.address, data.city, data.state, data.zip, data.race, data.backpack, data.healthCheck, data.haircut);
 				});
 		},
-		setChildDetails : function(punchCardId, firstName, lastName, address, city, state, zip, backpack, healthCheck, haircut) {
-			$("#childId").val(punchCardId);
+		setChildDetails : function(childId, punchCardId, firstName, lastName, address, city, state, zip, race, backpack, healthCheck, haircut) {
+			$("#childId").val(childId);
+			$("#punchCardId").val(punchCardId);
 			$("#firstName").val(firstName);
 			$("#lastName").val(lastName);
 			$("#address").val(address);
 			$("#city").val(city);
 			$("#state").val(state);
 			$("#zip").val(zip);
+			$("#race").val(race);
 			if (backpack > 0) {
 				$('#backpackCheckbox').prop('checked', true);
 			} else {
@@ -172,24 +174,36 @@ function listAll() {
 
 function clearDetails() {
 	$("#childId").val("");
+	$("#punchCardId").val("");
 	$("#firstName").val("");
 	$("#lastName").val("");
+	$("#address").val("");
+	$("#city").val("");
+	$("#state").val("");
+	$("#zip").val("");
+	$("#race").val("");
 	$('#backpackCheckbox').prop('checked', false);
 	$('#healthCheckCheckbox').prop('checked', false);
 	$('#haircutCheckbox').prop('checked', false);
 }
 
 function lookupChild() {
-	var childId = $("#childId").val();
+	var childId = $("#lookupId").val();
 	clearDetails();
 	childList.getChild(childId);
 }
 
 function saveChild() {
 	var child = {};
-	child.punchCardId = $("#childId").val();
+	child.childId = $("#childId").val();
+	child.punchCardId = $("#punchCardId").val();
 	child.firstName = $("#firstName").val();
 	child.lastName = $("#lastName").val();
+	child.address = $("#address").val();
+	child.city = $("#city").val();
+	child.state = $("#state").val();
+	child.zip = $("#zip").val();
+	child.race = $("#race").val();
 	child.backpack = $("#backpackCheckbox").prop("checked") ? 1 : 0;
 	child.healthCheck = $("#healthCheckCheckbox").prop("checked") ? 1 : 0;
 	child.haircut = $("#haircutCheckbox").prop("checked") ? 1 : 0;
@@ -212,21 +226,30 @@ function saveChild() {
 															.refreshChildListTable(childList.childListTableId);
 												}
 											});
+						} else {
+							doInsert(child);
 						}
 					})
 			.fail(
 					function() {
-						backpack.childDataAccess
-								.insertChildAsync(child)
-								.done(
-										function(insertedChild) {
-											if (typeof (insertedChild) !== "undefined"
-													&& insertedChild.punchCardId > 0) {
-												childList
-														.getChild(insertedChild.punchCardId);
-												childList
-														.refreshChildListTable(childList.childListTableId);
-											}
-										});
+						doInsert(child);
 					});
+}
+
+function doInsert(child) {
+	child.haircut = 0;
+	child.healthCheck = 0;
+	child.backpack = 0;
+	backpack.childDataAccess
+		.insertChildAsync(child)
+		.done(
+		function(insertedChild) {
+			if (typeof (insertedChild) !== "undefined"
+				&& insertedChild.punchCardId > 0) {
+				childList
+					.getChild(insertedChild.punchCardId);
+				childList
+					.refreshChildListTable(childList.childListTableId);
+			}
+		});
 }
