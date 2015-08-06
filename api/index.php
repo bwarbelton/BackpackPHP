@@ -22,6 +22,19 @@ $app->get('/testPage', function() use ($app) {
 });
 
 function getChildren() {
+    $request = \Slim\Slim::getInstance()->request();
+    $firstName = $request->params('firstName');
+    $lastName = $request->params('lastName');
+    $child = null;
+    if ($firstName == null && $lastName == null) {
+        $child = fetchChildren();
+    } else {
+        $child = fetchChildrenByName($firstName, $lastName);
+    }
+}
+
+function fetchChildren()
+{
     $sql = "select child_id AS childId, punch_card_id AS punchCardId, first_name AS firstName, last_name AS lastName, address, city, state, zip, race, school, backpack, healthCheck, haircut FROM child ORDER BY last_name, first_name";
     try {
         $db = getConnection();
@@ -30,9 +43,36 @@ function getChildren() {
         $db = null;
         // echo '{"children": ' . json_encode($children) . '}';
         echo json_encode($children);
-    } catch(PDOException $e) {
-        echo '{"error":{"text":'. $e->getMessage() .'}}';
+    } catch (PDOException $e) {
+        echo '{"error":{"text":' . $e->getMessage() . '}}';
     }
+}
+
+function fetchChildrenByName($firstName, $lastName)
+{
+    if ($firstName == null) { $firstName = "first name not found"; }
+    if ($lastName == null) { $lastName = "last name not found"; }
+    $sql = "select child_id AS childId, punch_card_id AS punchCardId, first_name AS firstName, last_name AS lastName, address, city, state, zip, race, school, backpack, healthCheck, haircut FROM child where first_name LIKE :first_name OR last_name LIKE :last_name ORDER BY last_name, first_name";
+    try {
+        $db = getConnection();
+        $stmt = $db->prepare($sql);
+        $firstName = $firstName . '%';
+        $lastName = $lastName . '%';
+        $stmt->bindParam("first_name", $firstName);
+        $stmt->bindParam("last_name", $lastName);
+        $stmt->execute();
+        $children = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $db = null;
+        // echo '{"children": ' . json_encode($children) . '}';
+        echo json_encode($children);
+    } catch (PDOException $e) {
+        echo '{"error":{"text":' . $e->getMessage() . '}}';
+    }
+}
+
+function getChild($child_id) {
+    $child = fetchChild($child_id);
+    echo json_encode($child);
 }
 
 function fetchChild($child_id) {
@@ -49,11 +89,6 @@ function fetchChild($child_id) {
     } catch(PDOException $e) {
         return '{"error":{"text":'. $e->getMessage() .'}}';
     }
-}
-
-function getChild($child_id) {
-    $child = fetchChild($child_id);
-    echo json_encode($child);
 }
 
 function postNewChild()
