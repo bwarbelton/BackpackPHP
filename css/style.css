@@ -317,39 +317,7 @@ div.tagsinput.disabled .tag a {
 div.tagsinput.disabled .input_wrapper {
     display: none
 }
-/*Navigation bar */
-/* .nav { */
-/*   	position:relative; */
-/*   	display:inline-block; */
-/*   	font-size:14px; */
-/*   	font-weight:900; */
-/*     background:#000; */
-/*     height: 55px; */
-/*     float: right; */
-/* } */
-/* .nav-list { */
-/* 	display:block;   */
-/* } */
-/* .nav-item { */
-/*   float:left; */
-/*   display:inline; */
-/*   zoom:1; */
-/* } */
-/* .nav-item a { */
-/*   display:block; */
-/*   padding:15px 20px; */
-/*   color:#FFF; */
-/*   background:#34495E; */
-/* } */
-/* .nav-item:first-child a { */
-/*   border-radius:5px 0 0 5px; */
-/* } */
-/* .nav-item:last-child a { */
-/*   border-radius:0 5px 5px 0; */
-/* } */
-/* .nav-item a:hover { */
-/*   background:#2C3E50; */
-/* } */
+
 .nav {
   position:relative;
   display:inline-block;

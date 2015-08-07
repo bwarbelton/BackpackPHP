@@ -181,23 +181,9 @@ form .control-label {
 form input[type=file]{
     color:transparent;
 }
-.btn-sign-up {
-    background: url('./image/signup@2x.png') no-repeat 0 0;
-    width: 301px;
-    height: 62px;
-    text-indent: -99999px;
-}
-.btn-sign-up:hover,
-.btn-sign-up:focus,
-.btn-sign-up.focus,
-.btn-sign-up:active,
-.btn-sign-up.active {
-    background: url('./image/signup@2x.png') no-repeat 0 0;
-}
+
 
 .btn-login {
-   /* background: url('./image/signup@2x.png') no-repeat 0 0;*/
- 
     /*text-indent: -99999px;*/
     background-color: #F56E38;
     width: 200px;
@@ -231,24 +217,6 @@ form input[type=file]{
 .btn-change-pwd:active,
 .btn-change-pwd.active {
     background: #ffa07a;
-}
-
-.btn-forgot-pwd {
-    background: url('./image/sendpassword@2x.png') no-repeat 0 0;
-    width: 301px;
-    height: 62px;
-    text-indent: -99999px;
-}
-.btn-forgot-pwd:hover,
-.btn-forgot-pwd:focus,
-.btn-forgot-pwd.focus,
-.btn-forgot-pwd:active,
-.btn-forgot-pwd.active {
-    background: url('./image/sendpassword@2x.png') no-repeat 0 0;
-}
-
-.forgot-password h3 {
-    margin-bottom: 1.5em;
 }
 
 form label {

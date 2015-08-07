@@ -34,8 +34,9 @@ var backpack = (function(BACKPACK) {
                 "<thead>" +
                     "<tr>" +
                         "<th width='50px;' style='font-size: 14px;'>ID</th>" +
+                        "<th width='75px;' style='font-size: 14px;'>Punch Card</th>" +
                         "<th width='120px;' style='font-size: 14px;'>First Name</th>" +
-                        "<th width='150px' style='font-size: 14px;'>Last Name</th>" +
+                        "<th width='200px' style='font-size: 14px;'>Last Name</th>" +
                     "</tr>" +
                 "</thead>" +
                 "<tbody></tbody>");
@@ -65,13 +66,15 @@ var backpack = (function(BACKPACK) {
             $("#" + tableId + " tbody")
                 .append(
                 "<tr><td style='font-size: 14px;'>"
+                + child.childId
+                + "</td><td style='font-size: 14px;'>"
                 + child.punchCardId
                 + "</td><td style='font-size: 14px;'>"
                 + child.firstName
                 + "</td><td style='font-size: 14px;'>"
                 + child.lastName
                 + "</td><td><input type=\"button\" value=\"Select\" style=\"font-size: 14px;\" onclick=\""
-                + this.name + ".getChild(" + child.punchCardId
+                + this.name + ".getChild(" + child.childId + child.punchCardId 
                 + ")\" /></td></tr>");
 
         },
@@ -97,11 +100,13 @@ var backpack = (function(BACKPACK) {
                                 $('#statusButton').attr('style', 'background-color:green');
                                 $('#statusButton').val('All good to go!');
                                 $('#updateButton').prop('disabled', true);
+                                $('#updateButton').attr('style', 'font-size:16px;');
                             }
                             else if(data.healthCheck != 1){
                                     $('#statusButton').attr('style', 'background-color:yellow');
                                     $('#statusButton').val('Not all completed');
                                     $('#updateButton').prop('disabled', true);
+                                    $('#updateButton').attr('style', 'font-size:16px;');
                                 }
                                 else {
                                     //healthcheck is done; display DONE on screen
@@ -109,6 +114,7 @@ var backpack = (function(BACKPACK) {
                                     $('#statusButton').attr('style', 'background-color:yellow');
                                     $('#statusButton').val('Not all completed');
                                     $('#updateButton').prop('disabled', false);
+                                    $('#updateButton').attr('style', 'font-size:16px;');
                                 }
                             break;
                         case 'healthCheck':
@@ -117,23 +123,26 @@ var backpack = (function(BACKPACK) {
                                 $('#statusButton').attr('style', 'background-color:green');
                                 $('#statusButton').val('All good to go!');
                                 $('#updateButton').prop('disabled', true);
+                                $('#updateButton').attr('style', 'font-size:16px;');
                             }
                             else {
                                 $('#statusButton').attr('style', 'background-color:yellow');
                                 $('#statusButton').val('Not all completed');
                                 $('#updateButton').prop('disabled', false);
+                                $('#updateButton').attr('style', 'font-size:16px;');
                             }
                             break;
                         case 'backpack':
                             if ( data.backpack == 1) {
                                 $('#statusButton').attr('style', 'background-color:green');
                                 $('#statusButton').val('All good to go!');
-                                $('#updateButton').prop('disabled', true);
+                                $('#updateButton').attr('style', 'display:none;')
                             }
                             else {
                                 $('#statusButton').attr('style', 'background-color:yellow');
-                                $('#statusButton').val('Not all completed');
-                                $('#updateButton').prop('disabled', false);
+                                $('#statusButton').val('Not all completed;');
+                                $('#updateButton').attr('style', 'display:block;')
+                                $('#updateButton').attr('style', 'font-size:16px;');
                             }
                             // change in requirement. Allow update even if the other stations are not completed
                             //if (data.healthCheck == 1 && data.haircut == 1) {
@@ -237,7 +246,7 @@ function clearDetails() {
     $("#punchCardId").val("");
     $("#firstName").val("");
     $("#statusButton").val('status unknown')
-                      .attr("style", 'background-color:yellow');
+                      .attr("style", 'background-color:yellow; font-size:16px;');
 }
 function clearChildListTable() {
     childList.clearTable();
