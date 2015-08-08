@@ -5,7 +5,7 @@ var childList;
 $(document).ready(
     function() {
         childList = backpack.createChildList("childList", "childListTable",
-            "childDetailDiv");
+            "childDetailDiv", thisStation);
         $("#registrationDiv").attr("style", "display:none");
         $("#addressDiv").attr("style", "display:none");
         $("#backpackDiv").attr("style", "display:none");
@@ -24,6 +24,7 @@ var backpack = (function(BACKPACK) {
         name : "",
         childListTableId : "",
         childDetailDivId : "",
+        station : "",
         initialize : function() {
             this.addHeader(this.childListTableId);
             //this.refreshChildListTable(this.childListTableId);
@@ -63,6 +64,8 @@ var backpack = (function(BACKPACK) {
             $('#childListDiv').attr("style", "display:block");
         },
         addChildRow : function(tableId, child) {
+            var clickText = "onclick=\"" + this.name + ".getChild(" + child.childId + ", " + child.punchCardId
+                + ", '" + this.station + "')\"";
             $("#" + tableId + " tbody")
                 .append(
                 "<tr><td style='font-size: 14px;'>"
@@ -73,9 +76,9 @@ var backpack = (function(BACKPACK) {
                 + child.firstName
                 + "</td><td style='font-size: 14px;'>"
                 + child.lastName
-                + "</td><td><input type=\"button\" value=\"Select\" style=\"font-size: 14px;\" onclick=\""
-                + this.name + ".getChild(" + child.childId + child.punchCardId 
-                + ")\" /></td></tr>");
+                + "</td><td><input type=\"button\" value=\"Select\" style=\"font-size: 14px;\" "
+                + clickText
+                + " /></td></tr>");
 
         },
         getChild : function(childId, punchCardId, whichStation) {
@@ -99,21 +102,22 @@ var backpack = (function(BACKPACK) {
                             if (data.haircut == 1 && data.healthCheck == 1) {
                                 $('#statusButton').attr('style', 'background-color:green');
                                 $('#statusButton').val('All good to go!');
-                                $('#updateButton').prop('disabled', true);
-                                $('#updateButton').attr('style', 'font-size:16px;');
+                                $('#healthcheck').val('DONE');
+                                $('#updateButton').attr('style', 'display:none;')
                             }
                             else if(data.healthCheck != 1){
                                     $('#statusButton').attr('style', 'background-color:yellow');
                                     $('#statusButton').val('Not all completed');
-                                    $('#updateButton').prop('disabled', true);
+                                    $('#updateButton').attr('style', 'display:block;')
                                     $('#updateButton').attr('style', 'font-size:16px;');
-                                }
+                                    $('#healthcheck').val('Not Done');
+                            }
                                 else {
                                     //healthcheck is done; display DONE on screen
                                     $('#healthcheck').val('DONE');
                                     $('#statusButton').attr('style', 'background-color:yellow');
                                     $('#statusButton').val('Not all completed');
-                                    $('#updateButton').prop('disabled', false);
+                                    $('#updateButton').attr('style', 'display:block;')
                                     $('#updateButton').attr('style', 'font-size:16px;');
                                 }
                             break;
@@ -122,13 +126,12 @@ var backpack = (function(BACKPACK) {
                             if (data.healthCheck == 1) {
                                 $('#statusButton').attr('style', 'background-color:green');
                                 $('#statusButton').val('All good to go!');
-                                $('#updateButton').prop('disabled', true);
-                                $('#updateButton').attr('style', 'font-size:16px;');
+                                $('#updateButton').attr('style', 'display:none;')
                             }
                             else {
                                 $('#statusButton').attr('style', 'background-color:yellow');
                                 $('#statusButton').val('Not all completed');
-                                $('#updateButton').prop('disabled', false);
+                                $('#updateButton').attr('style', 'display:block;')
                                 $('#updateButton').attr('style', 'font-size:16px;');
                             }
                             break;
@@ -165,11 +168,14 @@ var backpack = (function(BACKPACK) {
         }
     };
     BACKPACK.createChildList = function(name, childListTableId,
-                                        childDetailDivId) {
+                                        childDetailDivId, station) {
         var newChildList = Object.create(BACKPACK.childList);
         newChildList.name = name;
         newChildList.childListTableId = childListTableId;
         newChildList.childDetailDivId = childDetailDivId;
+        if (typeof (station) !== "undefined") {
+            newChildList.station = station;
+        }
         return newChildList;
     };
     return BACKPACK;
@@ -272,7 +278,7 @@ function setBackpackCompleted() {
 function setStationCompleted(whichStation) {
     var theIdToUse = 0;
     var punchCardIdEntered = 0;
-    if ($("#punchCardId").val() != '') {
+    if ($("#punchCardId").val() != '' && $("#punchCardId").val() > 0) {
         theIdToUse = $("#punchCardId").val();
         punchCardIdEntered = $("#punchCardId").val();
     } else {

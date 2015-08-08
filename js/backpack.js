@@ -79,8 +79,7 @@ var backpack = (function(BACKPACK) {
 									+ "</td><td>"
 									+ cBackpack
 									+"</td><td>"
-									+ "<input type=\"button\" value=\"Select\" onclick=\""
-									+ this.name + ".getChild(" + child.childId+ ")\" /></td></tr>");
+									+ "</tr>");
 
 		},
 		getChild : function(childId) {
@@ -139,6 +138,12 @@ backpack.childDataAccess = childDataAccess;
 
 function clearChildListTable() {
 	childList.clearTable();
+}
+
+function listAll()
+{
+	clearChildListTable();
+	childList.refreshChildListTable(childList.childListTableId); //fill out the div on html
 }
 
 function lookupChildrenByName() {

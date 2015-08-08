@@ -14,15 +14,15 @@
     <![endif]-->
 </head>
 <body style="background-image:none">
-<div>
-    <h2>Kutz4Kidz Backpack</h2><br/>
+<div style="margin-top: 120px;">
+    <h2>Kutz4Kidz Health Check</h2><br/>
 </div>
 <br/>
 <div class="navbar body-top-navbar navbar-fixed-top" style="background-color: black;">
     <nav id="navbutton" class="nav">
         <ul class="nav-list">
             <li class="nav-item"><a title="Check Health Check" href="/backpack/healthcheck">Health Check</a></li>
-            <li class="nav-item"><a href="http://dreambigabq.org/event.html" target="_blank" title="Help Center">HELP</a></li>
+            <li class="nav-item"><a href="http://dreambigabq.org/event.html" title="Help Center">HELP</a></li>
         </ul>
     </nav>
     <img src="../image/healthcheck.jpg" style="display: block; margin-left: 0px; margin-right: auto" />
@@ -38,7 +38,7 @@
 
     </div>
     <div>
-        <input id=lookupButton type="button" value="Lookup" style="margin-left: 70px;font-size: 14px;" onClick="lookupChild('healthcheck')" />
+        <input id=lookupButton type="button" value="Lookup" style="margin-left: 70px;font-size: 14px;" onClick="lookupChild('healthCheck')" />
     </div>
     <br/><br/>
     <h5>OR Lookup by name:</h5>
@@ -72,6 +72,7 @@
 <script src="../js/childDataAccess.js"></script>
 <script src="../js/stations.js"></script>
 <script type="text/javascript">
+    var thisStation = "healthCheck";
     $(document).ready(function () {
     });
     // Create mobile element
