@@ -98,6 +98,20 @@ var backpack = (function(BACKPACK) {
 						data.lastName, data.address, data.city, data.state, data.zip, data.race, data.backpack, data.healthCheck, data.haircut);
 				});
 		},
+		getChildAndListInTable : function(childId) {
+			var that = this;
+			var tableId = this.childListTableId;
+			backpack.childDataAccess.getChildAsync(childId).done(
+				function(data) {
+					//var index= data.length - 1;
+					// This is still ok when not using punch card id
+					// because punch card id is always 0
+					that.setChildDetails(data.childId, data.punchCardId, data.firstName,
+						data.lastName, data.address, data.city, data.state, data.zip, data.race, data.backpack, data.healthCheck, data.haircut);
+					$("#" + tableId + " tbody tr").remove();
+					that.addChildRow(tableId, data);
+				});
+		},
 		setChildDetails : function(childId, punchCardId, firstName, lastName, address, city, state, zip, race, backpack, healthCheck, haircut) {
 			$("#childId").val(childId);
 			// because we are not using punch card id
@@ -172,7 +186,8 @@ function registration() {
 	$("#backpackDiv").attr("style", "display:none");
 	$("#haircutDiv").attr("style", "display:none");
 	$("#healthcheckDiv").attr("style", "display:none");
-	$("#childListDiv").attr("style", "display:none");
+	$("#childListDiv").attr("style", "display:block");
+	clearChildListTable();
 	clearDetails();
 }
 
@@ -238,8 +253,8 @@ function lookupChild() {
 	clearMessages();
 	clearDetails();
 	clearChildListTable();
-	childList.getChild(childId);
-	$("#childListDiv").attr("style", "display:none");
+	childList.getChildAndListInTable(childId);
+	// $("#childListDiv").attr("style", "display:none");
 }
 
 function clearChildId() {
