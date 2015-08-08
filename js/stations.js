@@ -102,21 +102,20 @@ var backpack = (function(BACKPACK) {
                             if (data.haircut == 1 && data.healthCheck == 1) {
                                 $('#statusButton').attr('style', 'background-color:green');
                                 $('#statusButton').val('All good to go!');
-                                $('#updateButton').prop('disabled', true);
-                                $('#updateButton').attr('style', 'font-size:16px;');
+                                $('#updateButton').attr('style', 'display:none;')
                             }
                             else if(data.healthCheck != 1){
                                     $('#statusButton').attr('style', 'background-color:yellow');
                                     $('#statusButton').val('Not all completed');
-                                    $('#updateButton').prop('disabled', true);
+                                    $('#updateButton').attr('style', 'display:block;')
                                     $('#updateButton').attr('style', 'font-size:16px;');
-                                }
+                            }
                                 else {
                                     //healthcheck is done; display DONE on screen
                                     $('#healthcheck').val('DONE');
                                     $('#statusButton').attr('style', 'background-color:yellow');
                                     $('#statusButton').val('Not all completed');
-                                    $('#updateButton').prop('disabled', false);
+                                    $('#updateButton').attr('style', 'display:block;')
                                     $('#updateButton').attr('style', 'font-size:16px;');
                                 }
                             break;
@@ -125,13 +124,12 @@ var backpack = (function(BACKPACK) {
                             if (data.healthCheck == 1) {
                                 $('#statusButton').attr('style', 'background-color:green');
                                 $('#statusButton').val('All good to go!');
-                                $('#updateButton').prop('disabled', true);
-                                $('#updateButton').attr('style', 'font-size:16px;');
+                                $('#updateButton').attr('style', 'display:none;')
                             }
                             else {
                                 $('#statusButton').attr('style', 'background-color:yellow');
                                 $('#statusButton').val('Not all completed');
-                                $('#updateButton').prop('disabled', false);
+                                $('#updateButton').attr('style', 'display:block;')
                                 $('#updateButton').attr('style', 'font-size:16px;');
                             }
                             break;
