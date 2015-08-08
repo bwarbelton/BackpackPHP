@@ -32,7 +32,9 @@ var backpack = (function(BACKPACK) {
 		addHeader : function(tableId) {
 			$("#" + tableId)
 					.html(
-							"<thead><tr><th width='50px;'>ID</th><th width='75px;'>Punch Card ID</th><th width='150px;'>First Name</th>" +
+							// "<thead><tr><th width='50px;'>ID</th><th width='75px;'>Punch Card ID</th><th width='150px;'>First Name</th>" +
+							// because we are not using punch card id
+							"<thead><tr><th width='50px;'>ID</th><th width='150px;'>First Name</th>" +
 							"<th width='200px'>Last Name</th><th width='100px'>Health Check</th><th width='100px'>Haircut</th>" +
 							"<th width='100px'>Backpack</th></tr></thead><tbody></tbody>");
 		},
@@ -67,8 +69,9 @@ var backpack = (function(BACKPACK) {
 							"<tr><td >"
 									+ child.childId
 									+ "</td><td>"
-									+ child.punchCardId
-									+ "</td><td>"
+									// because we are not using punch card id
+									// + child.punchCardId
+									// + "</td><td>"
 									+ child.firstName
 									+ "</td><td>"
 									+ child.lastName
@@ -79,7 +82,9 @@ var backpack = (function(BACKPACK) {
 									+ "</td><td>"
 									+ cBackpack
 									+"</td><td>"
-									+ "</tr>");
+									+ "<td>"
+								+ "<input type=\"button\" value=\"Select\" onclick=\""
+								+ this.name + ".getChild(" + child.childId+ ")\" /></td></tr>");
 
 		},
 		getChild : function(childId) {
@@ -87,20 +92,23 @@ var backpack = (function(BACKPACK) {
 			backpack.childDataAccess.getChildAsync(childId).done(
 				function(data) {
 					//var index= data.length - 1;
+					// This is still ok when not using punch card id
+					// because punch card id is always 0
 					that.setChildDetails(data.childId, data.punchCardId, data.firstName,
 						data.lastName, data.address, data.city, data.state, data.zip, data.race, data.backpack, data.healthCheck, data.haircut);
 				});
 		},
 		setChildDetails : function(childId, punchCardId, firstName, lastName, address, city, state, zip, race, backpack, healthCheck, haircut) {
 			$("#childId").val(childId);
-			$("#punchCardId").val(punchCardId);
+			// because we are not using punch card id
+			// $("#punchCardId").val(punchCardId);
 			$("#firstName").val(firstName);
 			$("#lastName").val(lastName);
 			$("#address").val(address);
 			$("#city").val(city);
 			$("#state").val(state);
 			$("#zip").val(zip);
-			$("#race").val(race);
+			// $("#race").val(race);
 			if (backpack > 0) {
 				$('#backpackCheckbox').prop('checked', true);
 			} else {
@@ -140,8 +148,9 @@ function clearChildListTable() {
 	childList.clearTable();
 }
 
-function listAll()
-{
+function listAllChildren() {
+	clearMessages();
+	listAll();
 	clearChildListTable();
 	childList.refreshChildListTable(childList.childListTableId); //fill out the div on html
 }
@@ -150,6 +159,7 @@ function lookupChildrenByName() {
 	var childId = $("#lookupId").val();
 	var firstName = $("#firstNameLookup").val();
 	var lastName = $("#lastNameLookup").val();
+	clearMessages();
 	clearDetails();
 	clearChildListTable();
 	childList.getChildrenByName(childId, firstName, lastName);
@@ -208,61 +218,86 @@ function listAll() {
 
 function clearDetails() {
 	$("#childId").val("");
-	$("#punchCardId").val("");
+	// because we are not using punch card id
+	// $("#punchCardId").val("");
 	$("#firstName").val("");
 	$("#lastName").val("");
 	$("#address").val("");
 	$("#city").val("");
 	$("#state").val("");
 	$("#zip").val("");
-	$("#race").val("");
+	// $("#race").val("");
 	$('#backpackCheckbox').prop('checked', false);
 	$('#healthCheckCheckbox').prop('checked', false);
 	$('#haircutCheckbox').prop('checked', false);
+	clearMessages();
 }
 
 function lookupChild() {
 	var childId = $("#lookupId").val();
+	clearMessages();
 	clearDetails();
 	clearChildListTable();
 	childList.getChild(childId);
 	$("#childListDiv").attr("style", "display:none");
 }
 
+function clearChildId() {
+	$("#childId").val("");
+	clearMessages();
+}
+
 function saveChild() {
 	var child = getChildAsObject();
 	clearMessages();
-	backpack.childDataAccess
+	if (child.firstName.trim() == '' && child.lastName.trim() == '') {
+		showMessage1("Please enter a first name or last name.");
+		showMessage2("Empty names are not allowed.");
+	} else if (child.childId != '') {
+		showMessage1("This Id is already in the system.");
+		showMessage2("Either update or clear the Id to save new.");
+	} else {
+		// This is still ok when not using punch card id
+		// because punch card id is always 0
+		backpack.childDataAccess
 			.getChildAsync(child.punchCardId)
 			.done(
-					function(existingChild) {
-						if (typeof (existingChild) !== "undefined"
-								&& existingChild.punchCardId > 0) {
-							showMessage1("This punch card id has already been entered.");
-							showMessage2("Was the intent to update?");
-						} else {
-							clearDetails();
-							doInsert(child);
-						}
-					})
+			function(existingChild) {
+				// Punch card numbers cannot be duplicated except for
+				// punch card number 0 can be duplicated because it indicates that
+				// the child doesn't have a punch card
+				if (typeof (existingChild) !== "undefined"
+					&& existingChild.punchCardId > 0) {
+					showMessage1("This punch card id has already been entered.");
+					showMessage2("Was the intent to update?");
+				} else {
+					clearDetails();
+					doInsert(child);
+				}
+			})
 			.fail(
-					function() {
-						showMessage1("Unable to insert");
-						showMessage2("");
-					});
+			function() {
+				showMessage1("Unable to insert");
+				showMessage2("");
+			});
+	}
 }
 
 function getChildAsObject() {
 	var child = {};
 	child.childId = $("#childId").val();
-	child.punchCardId = $("#punchCardId").val();
+	// child.punchCardId = $("#punchCardId").val();
+	// Punch card id is not used anymore so set to
+	// zero so it can work in the database
+	child.punchCardId = 0;
 	child.firstName = $("#firstName").val();
 	child.lastName = $("#lastName").val();
 	child.address = $("#address").val();
 	child.city = $("#city").val();
 	child.state = $("#state").val();
 	child.zip = $("#zip").val();
-	child.race = $("#race").val();
+	// child.race = $("#race").val();
+	child.race = "";
 	child.backpack = $("#backpackCheckbox").prop("checked") ? 1 : 0;
 	child.healthCheck = $("#healthCheckCheckbox").prop("checked") ? 1 : 0;
 	child.haircut = $("#haircutCheckbox").prop("checked") ? 1 : 0;
@@ -272,6 +307,8 @@ function getChildAsObject() {
 function updateChild() {
 	var child = getChildAsObject();
 	clearMessages();
+	// This is still ok when not using punch card id
+	// because punch card id is always 0
 	backpack.childDataAccess.getChildAsync(child.childId)
 		.done(
 		function(existingChild) {
@@ -285,7 +322,7 @@ function updateChild() {
 						function(existingPunchcardRecord) {
 							if (typeof (existingPunchcardRecord) !== "undefined") {
 								showMessage1("This punch card id has already been used.");
-								showMessage2("Please use another punch card id");
+								showMessage2("Please use another punch card id.");
 							} else {
 								clearDetails();
 								doUpdate(child);
@@ -301,7 +338,8 @@ function updateChild() {
 		.fail(
 		function() {
 			showMessage1("Unable to update");
-			showMessage2("Check that the punch card id is not already used.");
+			// showMessage2("Check that the punch card id is not already used.");
+			showMessage2("Was the intent to save new?");
 		});
 }
 
@@ -313,12 +351,9 @@ function doInsert(child) {
 		.insertChildAsync(child)
 		.done(
 		function(insertedChild) {
-			if (typeof (insertedChild) !== "undefined"
-				// && insertedChild.punchCardId > 0
-			) {
+			if (typeof (insertedChild) !== "undefined") {
 				childList
 					.getChild(insertedChild.childId);
-				// childList.refreshChildListTable(childList.childListTableId);
 			}
 		});
 }

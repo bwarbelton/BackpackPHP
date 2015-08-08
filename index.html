@@ -22,7 +22,7 @@
             <li class="nav-item"><a title="Haircut" href="/backpack/haircut">Hair Cut</a></li>
             <li class="nav-item"><a title="Check Health Care" href="/backpack/healthcheck">Health Care</a></li>
             <li class="nav-item"><a title="Check Backpack" href="/backpack/backpack">Backpack</a></li>
-            <li class="nav-item"><a title="List All Names" onClick="listAll()">List All Names</a></li>
+            <li class="nav-item"><a title="List All Names" onClick="listAllChildren()">List All Names</a></li>
             <li class="nav-item"><a href="http://dreambigabq.org/kutz4kidz.html" title="Help Center">HELP</a></li>
         </ul>
     </nav>
@@ -32,29 +32,31 @@
 <div class="container" id="wrapper" style="margin-left: 0px;">
     <h2>Backpacks for Students</h2><br/>
     <div id="childLookupDiv" style="float:left;"></div>
-    <label>Id to find &nbsp;&nbsp; </label><input id="lookupId" type="text"></input>
+    <label>Id to find &nbsp;&nbsp; </label><input id="lookupId" type="text" />
     <input id=lookupByIdButton type="button" value="Lookup" onClick="lookupChild()" /><br />
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(type Child Id or Punch Card Id)<br />
-    <label>First Name &nbsp;&nbsp; </label><input id="firstNameLookup" type="text"></input>
-    <label>Last Name &nbsp;&nbsp; </label><input id="lastNameLookup" type="text"></input>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(type Child Id)<br />
+    <label>First Name &nbsp;&nbsp; </label><input id="firstNameLookup" type="text" />
+    <label>Last Name &nbsp;&nbsp; </label><input id="lastNameLookup" type="text" />
     <input id=lookupByNameButton type="button" value="Lookup" onClick="lookupChildrenByName()" /><br />
     <div id="childListDiv" style="display: none; float: left;">
         <br/><br/>
     <table id="childListTable" style="background-color: rgba(0, 0, 0, 0.15); font-size: 14px;"></table>
     </div>
     <div id="childDetailDiv" class="upload_form" style="float:right;">
-        <label>Child Id &nbsp;&nbsp; </label><input id="childId" type="text" disabled></input>This is auto generated<br /><br/>
+        <label>Child Id &nbsp;&nbsp; </label><input id="childId" type="text" disabled></input>This is auto generated
+        <input id=clearIdButton type="button" value="Clear this Id to save new child" onClick="clearChildId()" />&nbsp;
+        <input id=clearButton type="button" value="Clear All Input Fields" onClick="clearDetails()" />&nbsp;<br /><br/>
         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Input info below to save new or change</p>
-        <label>Punch Card Id &nbsp;&nbsp; </label><input id="punchCardId" type="text"></input><br /><br/>
-        <label>First Name &nbsp;&nbsp; </label><input id="firstName" type="text"></input><br /><br/>
-        <label>Last Name &nbsp;&nbsp; </label><input id="lastName" type="text"></input><br /><br/>
+        <!-- <label>Punch Card Id &nbsp;&nbsp; </label><input id="punchCardId" type="text"></input><br /><br/> -->
+        <label>First Name &nbsp;&nbsp; </label><input id="firstName" type="text" style="min-width: 60%"></input><br /><br />
+        <label>Last Name &nbsp;&nbsp; </label><input id="lastName" type="text" style="min-width: 60%"></input><br /><br />
 
         <div id="addressDiv" style="display: none;">
-            <label>Address  </label><input id="address" type="text"></input><br /><br/>
-            <label>City </label><input id="city" type="text"></input><br/><br/>
+            <label>Address  </label><input id="address" type="text" style="min-width: 60%"></input><br /><br/>
+            <label>City </label><input id="city" type="text" style="min-width: 60%"></input><br/><br/>
             <label>State </label><input id="state" type="text"></input><br/><br/>
-            <label>Zip Code </label><input id="zip" type="input"></input><br/><br/>
-            <label>Race </label><input id="race" type="input"></input>
+            <label>Zip Code </label><input id="zip" type="input"></input>
+            <!-- <br/><br/><label>Race </label><input id="race" type="input"></input> -->
         </div>
         <br/>
         <div id="backpackDiv" style="display: none;">
@@ -69,11 +71,10 @@
             <label>Received Haircut </label><input type="checkbox" id="haircutCheckbox" name="haircutCheckbox" value="Haircut"> <br />
         </div>
         <br/>
-        <input id=clearButton type="button" value="Clear" onClick="clearDetails()" />&nbsp;
         <input id=saveButton type="button" value="Save" onClick="saveChild()" />
         <input id=updateButton type="button" value="Update" onClick="updateChild()" />
-        <label id="message1">&nbsp;</label>
-        <label id="message2">&nbsp;</label>
+        <label id="message1" style="color: red">&nbsp;</label>
+        <label id="message2" style="color: red">&nbsp;</label>
     </div>
     <p></p>
     <!--<div id="childListDiv" style="display: none;">-->
