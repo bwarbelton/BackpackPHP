@@ -22,7 +22,7 @@
     <nav id="navbutton" class="nav">
         <ul class="nav-list">
             <li class="nav-item"><a title="Check Backpack" href="/backpack/backpack">Backpack</a></li>
-            <li class="nav-item"><a href="http://dreambigabq.org/event.html" title="Help Center">HELP</a></li>
+            <li class="nav-item"><a href="http://dreambigabq.org/event.html" target="_blank" title="Help Center">HELP</a></li>
         </ul>
     </nav>
     <img src="../image/backpack.jpg" style=" display: block; margin-left: 0px; margin-right: auto" />
@@ -60,7 +60,7 @@
     <label>First Name &nbsp;&nbsp; </label><input id="firstName" type="text" readonly /><br /><br/>
 
      <!--if both not completed, disable Set Completed button -->
-    <input id=statusButton type="button" value="Not all completed" disabled style="background-color: yellow;" />
+    <input id=statusButton type="button" value="Not all completed" disabled style="background-color: yellow;font-size:16px;" />
     <label>&nbsp;</label><input id=updateButton type="button" value="Set Completed" onClick="setBackpackCompleted()" />
     <br/>
     <br/>
@@ -69,7 +69,7 @@
     <br/>
     <!-List matching kids after the search -->
     <div id="childListDiv" style="display: none;">
-        <table id="childListTable" style="background-color: rgba(0, 0, 0, 0.15);"></table>
+        <table id="childListTable" style="background-color: rgba(0, 0, 0, 0.15); margin-bottom: 30px;"></table>
     </div>
 </div>
 
@@ -77,6 +77,7 @@
 <script src="../js/childDataAccess.js"></script>
 <script src="../js/stations.js"></script>
 <script type="text/javascript">
+    var thisStation = "backpack";
     $(document).ready(function () {
     });
     // Create mobile element

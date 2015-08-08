@@ -5,7 +5,7 @@ var childList;
 $(document).ready(
     function() {
         childList = backpack.createChildList("childList", "childListTable",
-            "childDetailDiv");
+            "childDetailDiv", thisStation);
         $("#registrationDiv").attr("style", "display:none");
         $("#addressDiv").attr("style", "display:none");
         $("#backpackDiv").attr("style", "display:none");
@@ -24,6 +24,7 @@ var backpack = (function(BACKPACK) {
         name : "",
         childListTableId : "",
         childDetailDivId : "",
+        station : "",
         initialize : function() {
             this.addHeader(this.childListTableId);
             //this.refreshChildListTable(this.childListTableId);
@@ -34,8 +35,9 @@ var backpack = (function(BACKPACK) {
                 "<thead>" +
                     "<tr>" +
                         "<th width='50px;' style='font-size: 14px;'>ID</th>" +
+                        "<th width='75px;' style='font-size: 14px;'>Punch Card</th>" +
                         "<th width='120px;' style='font-size: 14px;'>First Name</th>" +
-                        "<th width='150px' style='font-size: 14px;'>Last Name</th>" +
+                        "<th width='200px' style='font-size: 14px;'>Last Name</th>" +
                     "</tr>" +
                 "</thead>" +
                 "<tbody></tbody>");
@@ -62,17 +64,21 @@ var backpack = (function(BACKPACK) {
             $('#childListDiv').attr("style", "display:block");
         },
         addChildRow : function(tableId, child) {
+            var clickText = "onclick=\"" + this.name + ".getChild(" + child.childId + ", " + child.punchCardId
+                + ", '" + this.station + "')\"";
             $("#" + tableId + " tbody")
                 .append(
                 "<tr><td style='font-size: 14px;'>"
+                + child.childId
+                + "</td><td style='font-size: 14px;'>"
                 + child.punchCardId
                 + "</td><td style='font-size: 14px;'>"
                 + child.firstName
                 + "</td><td style='font-size: 14px;'>"
                 + child.lastName
-                + "</td><td><input type=\"button\" value=\"Select\" style=\"font-size: 14px;\" onclick=\""
-                + this.name + ".getChild(" + child.punchCardId
-                + ")\" /></td></tr>");
+                + "</td><td><input type=\"button\" value=\"Select\" style=\"font-size: 14px;\" "
+                + clickText
+                + " /></td></tr>");
 
         },
         getChild : function(childId, punchCardId, whichStation) {
@@ -97,11 +103,13 @@ var backpack = (function(BACKPACK) {
                                 $('#statusButton').attr('style', 'background-color:green');
                                 $('#statusButton').val('All good to go!');
                                 $('#updateButton').prop('disabled', true);
+                                $('#updateButton').attr('style', 'font-size:16px;');
                             }
                             else if(data.healthCheck != 1){
                                     $('#statusButton').attr('style', 'background-color:yellow');
                                     $('#statusButton').val('Not all completed');
                                     $('#updateButton').prop('disabled', true);
+                                    $('#updateButton').attr('style', 'font-size:16px;');
                                 }
                                 else {
                                     //healthcheck is done; display DONE on screen
@@ -109,6 +117,7 @@ var backpack = (function(BACKPACK) {
                                     $('#statusButton').attr('style', 'background-color:yellow');
                                     $('#statusButton').val('Not all completed');
                                     $('#updateButton').prop('disabled', false);
+                                    $('#updateButton').attr('style', 'font-size:16px;');
                                 }
                             break;
                         case 'healthCheck':
@@ -117,23 +126,26 @@ var backpack = (function(BACKPACK) {
                                 $('#statusButton').attr('style', 'background-color:green');
                                 $('#statusButton').val('All good to go!');
                                 $('#updateButton').prop('disabled', true);
+                                $('#updateButton').attr('style', 'font-size:16px;');
                             }
                             else {
                                 $('#statusButton').attr('style', 'background-color:yellow');
                                 $('#statusButton').val('Not all completed');
                                 $('#updateButton').prop('disabled', false);
+                                $('#updateButton').attr('style', 'font-size:16px;');
                             }
                             break;
                         case 'backpack':
                             if ( data.backpack == 1) {
                                 $('#statusButton').attr('style', 'background-color:green');
                                 $('#statusButton').val('All good to go!');
-                                $('#updateButton').prop('disabled', true);
+                                $('#updateButton').attr('style', 'display:none;')
                             }
                             else {
                                 $('#statusButton').attr('style', 'background-color:yellow');
-                                $('#statusButton').val('Not all completed');
-                                $('#updateButton').prop('disabled', false);
+                                $('#statusButton').val('Not all completed;');
+                                $('#updateButton').attr('style', 'display:block;')
+                                $('#updateButton').attr('style', 'font-size:16px;');
                             }
                             // change in requirement. Allow update even if the other stations are not completed
                             //if (data.healthCheck == 1 && data.haircut == 1) {
@@ -156,11 +168,14 @@ var backpack = (function(BACKPACK) {
         }
     };
     BACKPACK.createChildList = function(name, childListTableId,
-                                        childDetailDivId) {
+                                        childDetailDivId, station) {
         var newChildList = Object.create(BACKPACK.childList);
         newChildList.name = name;
         newChildList.childListTableId = childListTableId;
         newChildList.childDetailDivId = childDetailDivId;
+        if (typeof (station) !== "undefined") {
+            newChildList.station = station;
+        }
         return newChildList;
     };
     return BACKPACK;
@@ -237,7 +252,7 @@ function clearDetails() {
     $("#punchCardId").val("");
     $("#firstName").val("");
     $("#statusButton").val('status unknown')
-                      .attr("style", 'background-color:yellow');
+                      .attr("style", 'background-color:yellow; font-size:16px;');
 }
 function clearChildListTable() {
     childList.clearTable();
@@ -263,7 +278,7 @@ function setBackpackCompleted() {
 function setStationCompleted(whichStation) {
     var theIdToUse = 0;
     var punchCardIdEntered = 0;
-    if ($("#punchCardId").val() != '') {
+    if ($("#punchCardId").val() != '' && $("#punchCardId").val() > 0) {
         theIdToUse = $("#punchCardId").val();
         punchCardIdEntered = $("#punchCardId").val();
     } else {

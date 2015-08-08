@@ -27,7 +27,8 @@ label, select {
     font-family: "Avenir Next", sans-serif;
 }
 label {
-    font-size: 1.35em;
+    /*font-size: 1.35em;*/
+    font-size: xx-large;
     font-weight: normal;
 }
 
