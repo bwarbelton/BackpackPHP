@@ -27,7 +27,7 @@ var backpack = (function(BACKPACK) {
 		childDetailDivId : "",
 		initialize : function() {
 			this.addHeader(this.childListTableId);
-			this.refreshChildListTable(this.childListTableId);
+			// this.refreshChildListTable(this.childListTableId);
 		},
 		addHeader : function(tableId) {
 			$("#" + tableId)
@@ -239,8 +239,7 @@ function saveChild() {
 						if (typeof (existingChild) !== "undefined"
 								&& existingChild.punchCardId > 0) {
 							showMessage1("This punch card id has already been entered.");
-							showMessage2("Please update instead of save.");
-							// doUpdate(child);
+							showMessage2("Was the intent to update?");
 						} else {
 							clearDetails();
 							doInsert(child);
@@ -248,7 +247,8 @@ function saveChild() {
 					})
 			.fail(
 					function() {
-						doInsert(child);
+						showMessage1("Unable to insert");
+						showMessage2("");
 					});
 }
 
@@ -271,12 +271,28 @@ function getChildAsObject() {
 
 function updateChild() {
 	var child = getChildAsObject();
+	clearMessages();
 	backpack.childDataAccess.getChildAsync(child.childId)
 		.done(
 		function(existingChild) {
 			if (typeof (existingChild) !== "undefined") {
-				clearDetails();
-				doUpdate(child);
+				if (existingChild.punchCardId == child.punchCardId || child.punchCardId == 0) {
+					clearDetails();
+					doUpdate(child);
+				} else {
+					backpack.childDataAccess.getChildAsync(child.punchCardId)
+						.done(
+						function(existingPunchcardRecord) {
+							if (typeof (existingPunchcardRecord) !== "undefined") {
+								showMessage1("This punch card id has already been used.");
+								showMessage2("Please use another punch card id");
+							} else {
+								clearDetails();
+								doUpdate(child);
+							}
+						}
+					);
+				}
 			} else {
 				showMessage1("This record does not exist.");
 				showMessage2("Please save instead of update.");
@@ -285,7 +301,7 @@ function updateChild() {
 		.fail(
 		function() {
 			showMessage1("Unable to update");
-			showMessage2("");
+			showMessage2("Check that the punch card id is not already used.");
 		});
 }
 
@@ -298,11 +314,11 @@ function doInsert(child) {
 		.done(
 		function(insertedChild) {
 			if (typeof (insertedChild) !== "undefined"
-				&& insertedChild.punchCardId > 0) {
+				// && insertedChild.punchCardId > 0
+			) {
 				childList
-					.getChild(insertedChild.punchCardId);
-				childList
-					.refreshChildListTable(childList.childListTableId);
+					.getChild(insertedChild.childId);
+				// childList.refreshChildListTable(childList.childListTableId);
 			}
 		});
 }
