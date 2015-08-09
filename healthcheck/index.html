@@ -14,7 +14,7 @@
     <![endif]-->
 </head>
 <body style="background-image:none">
-<div style="margin-top: 120px;">
+<div style="color: white">
     <h2>Kutz4Kidz Health Check</h2><br/>
 </div>
 <br/>
@@ -25,14 +25,14 @@
             <li class="nav-item"><a href="http://dreambigabq.org/event.html" title="Help Center">HELP</a></li>
         </ul>
     </nav>
-    <img src="../image/healthcheck.jpg" style="display: block; margin-left: 0px; margin-right: auto" />
+    <img src="../image/healthcheck.jpg" style=" display: block; margin-left: 0px; margin-right: 10px; float: left" /><h2 style="color: white">Kutz4Kidz Health Check</h2>
 </div>
 <h5> Lookup by ID:</h5>
 <div id="childDetailDiv" class="upload_form">
-    <div>
+    <!-- <div>
         <label for="punchCardId">Punchcard Id </label><input id="punchCardId" type="text" style="font-size: 14px;"/>
         &nbsp;&nbsp; OR
-    </div>
+    </div> -->
     <br/>
     <div>
         <label for="childId">Child Id</label><input id="childId" type="text" style="font-size: 14px;"/>
@@ -44,7 +44,7 @@
     <br/><br/>
     <h5>OR Lookup by name:</h5>
     <div>
-        <label for="firstNameLookup">First Name </label><input id="firstNameLookup" type="text" style="font-size: 14px;"/>&nbsp;&nbsp; &nbsp;&nbsp
+        <label for="firstNameLookup">First Name </label><input id="firstNameLookup" type="text" style="font-size: 14px;"/><br/><br/>
     </div>
     <div>
         <label for="lastNameLookup">Last Name</label><input id="lastNameLookup" type="text" style="font-size: 14px;"/>
@@ -56,7 +56,8 @@
     <br/>
     <p>---------------------------------------------------------------------------------------------</p>
     <br/>
-    <label>First Name &nbsp;&nbsp; </label><input id="firstName" type="text" readonly /><br />
+    <label>Name &nbsp;&nbsp; </label><input id="fullName" type="text" readonly /><br /><br/>
+    <label>Addr (first 5)</label><input id="address" type="text" readonly /><br /><br/>
     <input id=statusButton type="button" value="Status Unknown" disabled style="background-color: yellow;" />
     <label>&nbsp;</label><input id=updateButton type="button" value="Set Completed" onClick="setHealthCheckCompleted()" />
     <br/>
