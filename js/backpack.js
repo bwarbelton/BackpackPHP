@@ -49,17 +49,17 @@ var backpack = (function(BACKPACK) {
 			});
 			$('#childListDiv').attr("style", "display:block");
 		},
-		refreshChildListTable : function(tableId) {
+		refreshChildListTable : function(tableId, whichPage) {
 			var that = this;
 			$("#" + tableId + " tbody tr").remove();
 			backpack.childDataAccess.getChildListAsync().done(function(list) {
 				$.each(list, function(key, val) {
-					that.addChildRow(tableId, val);
+					that.addChildRow(tableId, val, whichPage);
 				});
 			});
 			$('#childListDiv').attr("style", "display:block");
 		},
-		addChildRow : function(tableId, child) {
+		addChildRow : function(tableId, child, whichPage) {
 			var cHealthcheck = (child.healthCheck == 1) ? 'Done' : 'Not Completed';
 			var cHaircut = (child.haircut == 1) ? 'Done' : 'Not Completed';
 			var cBackpack = (child.backpack == 1) ? 'Done' : 'Not Completed';
@@ -83,9 +83,10 @@ var backpack = (function(BACKPACK) {
 									+ cBackpack
 									+"</td><td>"
 									+ "<td>"
-								+ "<input type=\"button\" value=\"Select\" onclick=\""
+								+ "<input class=\"selectButton\" type=\"button\" value=\"Select\" onclick=\""
 								+ this.name + ".getChild(" + child.childId+ ")\" /></td></tr>");
-
+			if (whichPage == 'listall')
+				$(".selectButton").attr('style',"display:none");
 		},
 		getChild : function(childId) {
 			var that = this;
@@ -166,7 +167,7 @@ function listAllChildren() {
 	clearMessages();
 	listAll();
 	clearChildListTable();
-	childList.refreshChildListTable(childList.childListTableId); //fill out the div on html
+	childList.refreshChildListTable(childList.childListTableId, 'listall'); //fill out the div on html
 }
 
 function lookupChildrenByName() {

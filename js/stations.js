@@ -32,7 +32,7 @@ var backpack = (function(BACKPACK) {
         addHeader : function(tableId) {
             $("#" + tableId)
                 .html(
-                "<thead>" +
+                "<thead style='border-style: solid;'>" +
                     "<tr>" +
                         "<th width='50px;' style='font-size: 14px;'>ID</th>" +
                         // because we are not using punch card id
