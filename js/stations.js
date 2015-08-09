@@ -110,11 +110,11 @@ var backpack = (function(BACKPACK) {
                             else if(data.healthCheck != 1){
                                     $('#statusButton').attr('style', 'background-color:yellow');
                                     $('#statusButton').val('Not all completed');
-                                    $('#updateButton').attr('style', 'display:block;')
+                                    $('#updateButton').prop('disabled', true);//.attr('style', 'display:block;')
                                     $('#updateButton').attr('style', 'font-size:16px;');
                                     $('#healthcheck').val('Not Done');
                             }
-                                else {
+                                else if (data.healthCheck == 1 && data.haircut != 1){
                                     //healthcheck is done; display DONE on screen
                                     $('#healthcheck').val('DONE');
                                     $('#statusButton').attr('style', 'background-color:yellow');
@@ -122,12 +122,12 @@ var backpack = (function(BACKPACK) {
                                     $('#updateButton').attr('style', 'display:block;')
                                     $('#updateButton').attr('style', 'font-size:16px;');
                                 }
-                            if (data.haircut == 1) {
-                                $('#statusButton').attr('style', 'background-color:green');
-                                $('#statusButton').val('All good to go!');
-                                $('#healthcheck').val('DONE');
-                                $('#updateButton').attr('style', 'display:none;')
-                            }
+                            //if (data.haircut == 1) {
+                            //    $('#statusButton').attr('style', 'background-color:green');
+                            //    $('#statusButton').val('All good to go!');
+                            //    $('#healthcheck').val('DONE');
+                            //    $('#updateButton').attr('style', 'display:none;')
+                            //}
                             break;
                         case 'healthCheck':
                          //   $('#updateButton').prop('disabled', false);
