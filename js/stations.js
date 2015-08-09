@@ -35,7 +35,8 @@ var backpack = (function(BACKPACK) {
                 "<thead>" +
                     "<tr>" +
                         "<th width='50px;' style='font-size: 14px;'>ID</th>" +
-                        "<th width='75px;' style='font-size: 14px;'>Punch Card</th>" +
+                        // because we are not using punch card id
+                        // "<th width='75px;' style='font-size: 14px;'>Punch Card</th>" +
                         "<th width='120px;' style='font-size: 14px;'>First Name</th>" +
                         "<th width='200px' style='font-size: 14px;'>Last Name</th>" +
                     "</tr>" +
@@ -70,8 +71,9 @@ var backpack = (function(BACKPACK) {
                 .append(
                 "<tr><td style='font-size: 14px;'>"
                 + child.childId
-                + "</td><td style='font-size: 14px;'>"
-                + child.punchCardId
+                    // because we are not using punch card id
+                // + "</td><td style='font-size: 14px;'>"
+                // + child.punchCardId
                 + "</td><td style='font-size: 14px;'>"
                 + child.firstName
                 + "</td><td style='font-size: 14px;'>"
@@ -96,7 +98,7 @@ var backpack = (function(BACKPACK) {
             backpack.childDataAccess.getChildAsync(theIdToUse).done(
                 function(data) {
                     var index= data.length - 1;
-                    that.setChildDetails(data.childId, data.punchCardId, data.firstName);
+                    that.setChildDetails(data.childId, data.punchCardId, data.firstName, data.lastName, data.address);
                     switch (whichStation) {
                         case 'haircut':
                             if (data.haircut == 1 && data.healthCheck == 1) {
@@ -120,6 +122,12 @@ var backpack = (function(BACKPACK) {
                                     $('#updateButton').attr('style', 'display:block;')
                                     $('#updateButton').attr('style', 'font-size:16px;');
                                 }
+                            if (data.haircut == 1) {
+                                $('#statusButton').attr('style', 'background-color:green');
+                                $('#statusButton').val('All good to go!');
+                                $('#healthcheck').val('DONE');
+                                $('#updateButton').attr('style', 'display:none;')
+                            }
                             break;
                         case 'healthCheck':
                          //   $('#updateButton').prop('disabled', false);
@@ -158,10 +166,12 @@ var backpack = (function(BACKPACK) {
                     }
                 });
         },
-        setChildDetails : function(childId, punchCardId, firstName) {
+        setChildDetails : function(childId, punchCardId, firstName, lastName, address) {
             $("#childId").val(childId);
-            $("#punchCardId").val(punchCardId);
-            $("#firstName").val(firstName);
+            // $("#punchCardId").val(punchCardId);
+            // $("#firstName").val(firstName);
+            $("#fullName").val(firstName + ' ' + lastName);
+            $("#address").val(address.substring(0, 5) + '...');
         },
         clearTable : function() {
             $("#" + this.childListTableId + " tbody tr").remove();
@@ -249,7 +259,7 @@ function listAll() {
 
 function clearDetails() {
     $("#childId").val("");
-    $("#punchCardId").val("");
+    // $("#punchCardId").val("");
     $("#firstName").val("");
     $("#statusButton").val('status unknown')
                       .attr("style", 'background-color:yellow; font-size:16px;');
@@ -259,7 +269,8 @@ function clearChildListTable() {
 }
 
 function lookupChild(whichStation) {
-    var punchCardId = $("#punchCardId").val();
+    // var punchCardId = $("#punchCardId").val();
+    punchCardId = '0';
     var childId = $("#childId").val();
     clearDetails();
     childList.getChild(childId, punchCardId, whichStation);
