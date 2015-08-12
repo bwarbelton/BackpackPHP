@@ -32,7 +32,7 @@ var backpack = (function(BACKPACK) {
         addHeader : function(tableId) {
             $("#" + tableId)
                 .html(
-                "<thead>" +
+                "<thead style='border-style: solid;'>" +
                     "<tr>" +
                         "<th width='50px;' style='font-size: 14px;'>ID</th>" +
                         // because we are not using punch card id
@@ -125,7 +125,6 @@ var backpack = (function(BACKPACK) {
                             if (data.haircut == 1) {
                                 $('#statusButton').attr('style', 'background-color:green');
                                 $('#statusButton').val('All good to go!');
-                                $('#healthcheck').val('DONE');
                                 $('#updateButton').attr('style', 'display:none;')
                             }
                             break;
