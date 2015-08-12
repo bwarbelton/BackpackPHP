@@ -33,13 +33,13 @@ var backpack = (function(BACKPACK) {
             $("#" + tableId)
                 .html(
                 "<thead style='border-style: solid;'>" +
-                    "<tr>" +
-                        "<th width='50px;' style='font-size: 14px;'>ID</th>" +
-                        // because we are not using punch card id
-                        // "<th width='75px;' style='font-size: 14px;'>Punch Card</th>" +
-                        "<th width='120px;' style='font-size: 14px;'>First Name</th>" +
-                        "<th width='200px' style='font-size: 14px;'>Last Name</th>" +
-                    "</tr>" +
+                "<tr>" +
+                "<th width='50px;' style='font-size: 14px;'>ID</th>" +
+                    // because we are not using punch card id
+                    // "<th width='75px;' style='font-size: 14px;'>Punch Card</th>" +
+                "<th width='120px;' style='font-size: 14px;'>First Name</th>" +
+                "<th width='200px' style='font-size: 14px;'>Last Name</th>" +
+                "</tr>" +
                 "</thead>" +
                 "<tbody></tbody>");
         },
@@ -72,8 +72,8 @@ var backpack = (function(BACKPACK) {
                 "<tr><td style='font-size: 14px;'>"
                 + child.childId
                     // because we are not using punch card id
-                // + "</td><td style='font-size: 14px;'>"
-                // + child.punchCardId
+                    // + "</td><td style='font-size: 14px;'>"
+                    // + child.punchCardId
                 + "</td><td style='font-size: 14px;'>"
                 + child.firstName
                 + "</td><td style='font-size: 14px;'>"
@@ -108,28 +108,29 @@ var backpack = (function(BACKPACK) {
                                 $('#updateButton').attr('style', 'display:none;')
                             }
                             else if(data.healthCheck != 1){
-                                    $('#statusButton').attr('style', 'background-color:yellow');
-                                    $('#statusButton').val('Not all completed');
-                                    $('#updateButton').attr('style', 'display:block;')
-                                    $('#updateButton').attr('style', 'font-size:16px;');
-                                    $('#healthcheck').val('Not Done');
+                                $('#statusButton').attr('style', 'background-color:yellow');
+                                $('#statusButton').val('Not all completed');
+                                $('#updateButton').prop('disabled', true);//.attr('style', 'display:block;')
+                                $('#updateButton').attr('style', 'font-size:16px;');
+                                $('#healthcheck').val('Not Done');
                             }
-                                else {
-                                    //healthcheck is done; display DONE on screen
-                                    $('#healthcheck').val('DONE');
-                                    $('#statusButton').attr('style', 'background-color:yellow');
-                                    $('#statusButton').val('Not all completed');
-                                    $('#updateButton').attr('style', 'display:block;')
-                                    $('#updateButton').attr('style', 'font-size:16px;');
-                                }
-                            if (data.haircut == 1) {
-                                $('#statusButton').attr('style', 'background-color:green');
-                                $('#statusButton').val('All good to go!');
-                                $('#updateButton').attr('style', 'display:none;')
+                            else if (data.healthCheck == 1 && data.haircut != 1){
+                                //healthcheck is done; display DONE on screen
+                                $('#healthcheck').val('DONE');
+                                $('#statusButton').attr('style', 'background-color:yellow');
+                                $('#statusButton').val('Not all completed');
+                                $('#updateButton').attr('style', 'display:block;')
+                                $('#updateButton').attr('style', 'font-size:16px;');
                             }
+                            //if (data.haircut == 1) {
+                            //    $('#statusButton').attr('style', 'background-color:green');
+                            //    $('#statusButton').val('All good to go!');
+                            //    $('#healthcheck').val('DONE');
+                            //    $('#updateButton').attr('style', 'display:none;')
+                            //}
                             break;
                         case 'healthCheck':
-                         //   $('#updateButton').prop('disabled', false);
+                            //   $('#updateButton').prop('disabled', false);
                             if (data.healthCheck == 1) {
                                 $('#statusButton').attr('style', 'background-color:green');
                                 $('#statusButton').val('All good to go!');
@@ -206,7 +207,7 @@ function lookupChildrenByName() {
 
 
 function registration() {
-   // $("#registrationDiv").attr("style", "display:block");
+    // $("#registrationDiv").attr("style", "display:block");
     $("#childDetailDiv").attr("style", "display:block");
     $("#addressDiv").attr("style", "display:block");
     $("#backpackDiv").attr("style", "display:none");
@@ -217,7 +218,7 @@ function registration() {
 }
 
 function checkBackpack() {
-   // $("#registrationDiv").attr("style", "display:none");
+    // $("#registrationDiv").attr("style", "display:none");
     $("#addressDiv").attr("style", "display:none");
     $("#backpackDiv").attr("style", "display:block");
     $("#haircutDiv").attr("style", "display:none");
@@ -261,7 +262,7 @@ function clearDetails() {
     // $("#punchCardId").val("");
     $("#firstName").val("");
     $("#statusButton").val('status unknown')
-                      .attr("style", 'background-color:yellow; font-size:16px;');
+        .attr("style", 'background-color:yellow; font-size:16px;');
 }
 function clearChildListTable() {
     childList.clearTable();
